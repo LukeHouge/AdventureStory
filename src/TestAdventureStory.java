@@ -32,7 +32,7 @@ import java.util.Random;
  * intended for use within this class.
  * 
  * @author Marc Renault
- * @author TODO add your name here when you add tests and comment the tests
+ * @author Luke Houge
  *
  */
 public class TestAdventureStory {
@@ -73,6 +73,16 @@ public class TestAdventureStory {
                 error = true;
             }
         }
+        {
+            Scanner in2 = new Scanner("23\n");
+            int expected2 = 23;
+            int result2 = AdventureStory.promptInt(in2, "Enter integer: ", 5, 30);
+            if(expected2 != result2) {
+                System.out.println("2) testPromptInt expected: " + expected2 + " result: " + result2);
+                error = false;
+            }
+        }
+
         
         if(error) {
             System.out.println("testPromptInt failed");

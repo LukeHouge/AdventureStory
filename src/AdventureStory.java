@@ -9,13 +9,13 @@ public class AdventureStory {
 
     /**
      * Prompts the user for a value by displaying prompt.
-     * Note: This method should not add a new line to the output of prompt. 
+     * Note: This method should not add a new line to the output of prompt.
      *
-     * After prompting the user, the method will consume an entire line of input while reading an 
-     * int. 
+     * After prompting the user, the method will consume an entire line of input while reading an
+     * int.
      * If the value read is between min and max (inclusive), that value is returned.
-     * Otherwise, "Invalid value." terminated by a new line is output and the user is prompted 
-     * again. 
+     * Otherwise, "Invalid value." terminated by a new line is output and the user is prompted
+     * again.
      *
      * @param sc The Scanner instance to read from System.in.
      * @param prompt The name of the value for which the user is prompted.
@@ -24,7 +24,28 @@ public class AdventureStory {
      * @return Returns the value read from the user.
      */
     public static int promptInt(Scanner sc, String prompt, int min, int max) {
-        return -99;
+        int inputInt = 0;
+        // keeps prompting for an int until valid is entered
+        while (true) {
+            // print out supplied prompt
+            System.out.print(prompt);
+            // checking if there is an int, and setting inputInt to that if so
+            if (sc.hasNextInt()) {
+                inputInt = sc.nextInt();
+            }
+            // alerting to expected value if no nextInt
+            else {
+                System.out.println("Invalid value.");
+            }
+            // checking range with min and max
+            if (inputInt >= min && inputInt <= max) {
+                return inputInt;
+                // if not valid, return -1
+            }
+            else {
+                System.out.println("Invalid value.");
+            }
+        }
     }
 
     /**
