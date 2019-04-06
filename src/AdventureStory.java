@@ -337,6 +337,9 @@ public class AdventureStory {
      * @param c The character to print out.
      */
     public static void printLine(int len, char c) {
+        for (int i = 0; i < len; i++) {
+            System.out.println(c);
+        }
     }
 
     /**
