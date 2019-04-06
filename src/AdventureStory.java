@@ -304,7 +304,11 @@ public class AdventureStory {
      * @return The index of the room with the given id if found in rooms. Otherwise, -1.
      */
     public static int getRoomIndex(String id, ArrayList<String[]> rooms) {
-        for ()
+        for(String[] row : rooms) {
+            if (id == row[0]) {
+                return rooms.indexOf(row);
+            }
+        }
         return -1;
     }
     
@@ -318,6 +322,11 @@ public class AdventureStory {
      * @return The reference to the String array in rooms with the room id of id. Otherwise, null.
      */
     public static String[] getRoomDetails(String id, ArrayList<String[]> rooms) {
+        for(String[] row : rooms) {
+            if (id.equals(row[0])) {
+                return row;
+            }
+        }
         return null;
     }
 

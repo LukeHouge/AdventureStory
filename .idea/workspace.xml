@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b05cb755-10cf-49d5-9686-465a6c4b9966" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/AdventureStory/TestAdventureStory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AdventureStory/TestAdventureStory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AdventureStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AdventureStory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TestAdventureStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestAdventureStory.java" afterDir="false" />
     </list>
@@ -20,13 +19,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="89" column="5" lean-forward="true" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
+            <state relative-caret-position="595">
+              <caret line="330" column="5" lean-forward="true" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#15831#15832#0" expanded="true" />
-                <element signature="e#16290#16291#0" expanded="true" />
-                <element signature="e#21917#21918#0" expanded="true" />
+                <element signature="e#22177#22178#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -35,8 +32,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TestAdventureStory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="138" column="13" lean-forward="true" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
+            <state relative-caret-position="615">
+              <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -96,7 +93,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554578605813" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554579143766" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -146,7 +143,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554575232497</updated>
-      <workItem from="1554575234117" duration="2057000" />
+      <workItem from="1554575234117" duration="2657000" />
     </task>
     <task id="LOCAL-00001" summary="adding promptInt method and one test">
       <created>1554575966955</created>
@@ -155,11 +152,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554575966955</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="adding promptChar and promptString methods">
+      <created>1554578633246</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1554578633246</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2057000" />
+    <option name="totallyTimeSpent" value="2657000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -177,22 +181,22 @@
       <window_info id="Image Layers" order="0" />
       <window_info id="Designer" order="1" />
       <window_info id="UI Designer" order="2" />
-      <window_info id="TODO" order="3" sideWeight="0.50377357" side_tool="true" visible="true" weight="0.15965052" />
+      <window_info id="TODO" order="3" sideWeight="0.50377357" side_tool="true" weight="0.15965052" />
       <window_info id="Favorites" order="4" sideWeight="0.5022472" side_tool="true" weight="0.1916972" />
       <window_info id="Capture Tool" order="5" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.49622643" visible="true" weight="0.15965052" />
-      <window_info id="Structure" order="7" sideWeight="0.5025126" side_tool="true" weight="0.1916972" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.49671486" visible="true" weight="0.15965052" />
+      <window_info id="Structure" order="7" sideWeight="0.50328517" side_tool="true" visible="true" weight="0.15965052" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="1" weight="0.1648265" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.21711569" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.16403785" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.16403785" />
+      <window_info active="true" anchor="bottom" id="Debug" order="7" visible="true" weight="0.39984226" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
-      <window_info anchor="right" id="Version Control" order="0" sideWeight="0.49245283" visible="true" weight="0.19976172" />
+      <window_info anchor="right" id="Version Control" order="0" sideWeight="0.49277267" visible="true" weight="0.19976172" />
       <window_info anchor="right" id="Maven" order="1" sideWeight="0.49905124" weight="0.32962668" />
       <window_info anchor="right" id="Palette" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -204,7 +208,7 @@
       <window_info anchor="right" id="Ant Build" order="9" sideWeight="0.49905124" weight="0.2494043" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="10" weight="0.25" />
       <window_info anchor="right" id="Problems" order="11" visible="true" weight="0.31684983" />
-      <window_info anchor="right" id="Terminal" order="12" sideWeight="0.50754714" side_tool="true" visible="true" weight="0.19976172" />
+      <window_info anchor="right" id="Terminal" order="12" sideWeight="0.50722736" side_tool="true" visible="true" weight="0.19976172" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,7 +216,20 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="adding promptInt method and one test" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding promptInt method and one test" />
+    <MESSAGE value="adding promptChar and promptString methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding promptChar and promptString methods" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/AdventureStory.java</url>
+          <line>324</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Config.java">
@@ -224,20 +241,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TestAdventureStory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="138" column="13" lean-forward="true" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
+        <state relative-caret-position="615">
+          <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="89" column="5" lean-forward="true" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
+        <state relative-caret-position="595">
+          <caret line="330" column="5" lean-forward="true" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#15831#15832#0" expanded="true" />
-            <element signature="e#16290#16291#0" expanded="true" />
-            <element signature="e#21917#21918#0" expanded="true" />
+            <element signature="e#22177#22178#0" expanded="true" />
           </folding>
         </state>
       </provider>

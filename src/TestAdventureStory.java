@@ -173,6 +173,7 @@ public class TestAdventureStory {
                 error = true;
             }
         }
+        // TODO: add another test
         
         if(error) {
             System.out.println("testGetRoomIndex failed");
