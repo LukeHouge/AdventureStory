@@ -51,7 +51,7 @@ public class TestAdventureStory {
         testGetRoomDetails();
 
         //Milestone 2 Tests
-        testParseStory();
+        // testParseStory();
         //TODO
         
         //Milestone 3 Tests

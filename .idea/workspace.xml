@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b05cb755-10cf-49d5-9686-465a6c4b9966" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AdventureStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AdventureStory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestAdventureStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestAdventureStory.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +18,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="339" column="39" lean-forward="true" selection-start-line="339" selection-start-column="39" selection-end-line="339" selection-end-column="39" />
+            <state relative-caret-position="968">
+              <caret line="396" column="32" selection-start-line="396" selection-start-column="32" selection-end-line="396" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#22262#22263#0" expanded="true" />
+                <element signature="e#23514#23515#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -31,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TestAdventureStory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
+            <state relative-caret-position="390">
+              <caret line="50" column="19" selection-start-line="50" selection-start-column="19" selection-end-line="50" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -92,7 +92,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554579229467" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554579796483" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -142,7 +142,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554575232497</updated>
-      <workItem from="1554575234117" duration="2755000" />
+      <workItem from="1554575234117" duration="3320000" />
     </task>
     <task id="LOCAL-00001" summary="adding promptInt method and one test">
       <created>1554575966955</created>
@@ -165,11 +165,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554579160591</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="adding printLine method">
+      <created>1554579246450</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1554579246450</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2755000" />
+    <option name="totallyTimeSpent" value="3320000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -224,7 +231,8 @@
     <MESSAGE value="adding promptInt method and one test" />
     <MESSAGE value="adding promptChar and promptString methods" />
     <MESSAGE value="adding getRoomDetails method" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding getRoomDetails method" />
+    <MESSAGE value="adding printLine method" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding printLine method" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Config.java">
@@ -236,18 +244,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TestAdventureStory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="175" column="33" selection-start-line="175" selection-start-column="33" selection-end-line="175" selection-end-column="33" />
+        <state relative-caret-position="390">
+          <caret line="50" column="19" selection-start-line="50" selection-start-column="19" selection-end-line="50" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="339" column="39" lean-forward="true" selection-start-line="339" selection-start-column="39" selection-end-line="339" selection-end-column="39" />
+        <state relative-caret-position="968">
+          <caret line="396" column="32" selection-start-line="396" selection-start-column="32" selection-end-line="396" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#22262#22263#0" expanded="true" />
+            <element signature="e#23514#23515#0" expanded="true" />
           </folding>
         </state>
       </provider>

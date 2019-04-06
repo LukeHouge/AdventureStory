@@ -365,6 +365,41 @@ public class AdventureStory {
      * @param val The string to print out.
      */
     public static void printString(int len, String val) {
+        int count = 0;
+        for (int i = 0; i < val.length(); i++){
+            if (val.charAt(i) == '\n') {
+                System.out.print(val.charAt(i));
+                count = 0;
+            }
+            if (count == len) {
+                if (Character.isWhitespace(val.charAt(i))) {
+                    System.out.println();
+                    count = 0;
+                }
+                else if (!Character.isLetterOrDigit(val.charAt(i))) {
+                    System.out.println();
+                    count = 0;
+                    System.out.print(val.charAt(i));
+                    count++;
+                }
+                else {
+                    if (Character.isWhitespace(val.charAt(i-1))) {
+                        System.out.println();
+                        count = 0;
+                        System.out.print(val.charAt(i));
+                        count++;
+                    }
+                    else {
+                        System.out.print('-');
+                        System.out.println();
+                        count = 0;
+                        System.out.print(val.charAt(i));
+                        count++;
+                    }
+                }
+            }
+        }
+        System.out.println();
     }
 
     /**
