@@ -66,7 +66,7 @@ public class AdventureStory {
         String input = sc.nextLine();
         for (int i=0; i<input.length(); i++){
             if (Character.isLetterOrDigit(input.charAt(i))) {
-                return input.charAt(i);
+                return Character.toLowerCase(input.charAt(i));
             }
         }
         return '\u0000';
