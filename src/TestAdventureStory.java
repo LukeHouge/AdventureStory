@@ -106,7 +106,16 @@ public class TestAdventureStory {
                 error = true;
             }
         }
-        
+        {
+            Scanner in1 = new Scanner("hello this is a test!\n");
+            String expected1 = "hello this is a test!";
+            String result1 = AdventureStory.promptString(in1, "Enter: ");
+            if(!expected1.equals(result1)) {
+                System.out.println("2) testPromptString expected: " + expected1 + " result: " + result1);
+                error = true;
+            }
+        }
+
         if(error) {
             System.out.println("testPromptString failed");
         } else {
@@ -120,12 +129,21 @@ public class TestAdventureStory {
     private static void testPromptChar() {
         boolean error = false;
         
-        { 
+        {
             Scanner in = new Scanner("  foobar\n");
             char expected = 'f';
             char result = AdventureStory.promptChar(in, "Enter: ");
             if(expected != result) {
                 System.out.println("1) testPromptChar expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+        {
+            Scanner in2 = new Scanner("     hello!\n");
+            char expected2 = 'h';
+            char result2 = AdventureStory.promptChar(in2, "Enter: ");
+            if(expected2 != result2) {
+                System.out.println("2) testPromptChar expected: " + expected2 + " result: " + result2);
                 error = true;
             }
         }

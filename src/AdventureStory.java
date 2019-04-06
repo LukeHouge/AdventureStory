@@ -4,6 +4,7 @@ import java.util.Random;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.IOException;
+import java.lang.*;
 
 public class AdventureStory {
 
@@ -61,7 +62,14 @@ public class AdventureStory {
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
-        return '\0';
+        System.out.println(prompt);
+        String input = sc.nextLine();
+        for (int i=0; i<input.length(); i++){
+            if (Character.isLetterOrDigit(input.charAt(i))) {
+                return input.charAt(i);
+            }
+        }
+        return '\u0000';
     }
 
     /**
@@ -76,7 +84,9 @@ public class AdventureStory {
      * @return Returns the string entered by the user with leading and trailing whitespace removed.
      */    
     public static String promptString(Scanner sc, String prompt) {
-        return null;
+        System.out.println(prompt);
+        String input = sc.nextLine();
+        return input.trim();
     }
 
     /**
@@ -294,6 +304,7 @@ public class AdventureStory {
      * @return The index of the room with the given id if found in rooms. Otherwise, -1.
      */
     public static int getRoomIndex(String id, ArrayList<String[]> rooms) {
+        for ()
         return -1;
     }
     
