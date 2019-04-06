@@ -62,7 +62,7 @@ public class AdventureStory {
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         String input = sc.nextLine();
         for (int i=0; i<input.length(); i++){
             if (Character.isLetterOrDigit(input.charAt(i))) {
@@ -84,7 +84,7 @@ public class AdventureStory {
      * @return Returns the string entered by the user with leading and trailing whitespace removed.
      */    
     public static String promptString(Scanner sc, String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         String input = sc.nextLine();
         return input.trim();
     }
@@ -481,7 +481,7 @@ public class AdventureStory {
      * play again loop with calls to the various supporting methods. This method will evolve over 
      * the 3 milestones.
      * 
-     * The Scanner object to read from System.in and the Random object with a seed of Config.SEED 
+     * The Scanner object to read from System.in and the Random object with a seed of c
      * will be created in the main method and used as arguments for the supporting methods as 
      * required.
      *
@@ -495,82 +495,18 @@ public class AdventureStory {
      *   - Repeat until the character returned by promptChar is an 'n'
      *   - Print out "Thank you for playing!", terminated by a newline.
      *
-     * Milestone #2:
-     *   - Print out the welcome message: "Welcome to this choose your own adventure system!"
-     *   - Begin the play again loop:
-     *       - Prompt for a filename using the promptString method with the prompt:
-     *         "Please enter the story filename: "
-     *       - If the file is successfully parsed using the parseFile method:
-     *            - Begin the game loop with the current room ID being that in the 0 index of the 
-     *              String array passed into the parseFile method as the 4th parameter
-     *                 - Output the room details via the displayRoom method
-     *                 - Output the transitions via the displayTransitions method
-     *                 - If the current transition is not terminal:
-     *                   - Prompt the user for a number between -1 and the number of transitions 
-     *                     minus 1, using the promptInt method with a prompt of "Choose: "
-     *                   - If the returned value is -1:
-     *                      - read a char using promptChar with a prompt of
-     *                        "Are you sure you want to quit the adventure? "
-     *                      - Set the current room ID to Config.FAIL if that character returned is 'y'
-     *                   - Otherwise: Set the current room ID to the room ID at index 
-     *                                Config.TRAN_ROOM_ID of the selected transition.
-     *                 - Otherwise, the current transition is terminal: Set the current room ID to 
-     *                   the terminal state in the transition String array.
-     *            - Continue the game loop until the current room ID is Config.SUCCESS or
-     *              Config.FAIL
-     *            - If the current room ID is Config.FAIL, print out the message (terminated by a 
-     *              line): "You failed to complete the adventure. Better luck next time!"
-     *            - Otherwise: print out the message (terminated by a line): 
-     *              "Congratulations! You successfully completed the adventure!"
-     *       - Prompt for a char using the promptChar method with the prompt:
-     *         "Do you want to try again? "
-     *   - Repeat until the character returned by promptChar is an 'n'
-     *   - Print out "Thank you for playing!", terminated by a newline.
-     *
-     * Milestone #3:
-     *   - Print out the welcome message: "Welcome to this choose your own adventure system!"
-     *   - Begin the play again loop:
-     *       - Prompt for a filename using the promptString method with the prompt:
-     *         "Please enter the story filename: "
-     *       - If the file is successfully parsed using the parseFile method:
-     *            - Begin the game loop with the current room ID being that in the 0 index of the 
-     *              String array passed into the parseFile method as the 4th parameter
-     *                 - Output the room details via the displayRoom method
-     *                 - Output the transitions via the displayTransitions method
-     *                 - If the current transition is not terminal:
-     *                   - If the value returnd by the probTrans method is null:
-     *                     - Prompt the user for a number between -2 and the number of transitions 
-     *                       minus 1, using the promptInt method with a prompt of "Choose: "
-     *                     - If the returned value is -1:
-     *                        - read a char using promptChar with a prompt of
-     *                          "Are you sure you want to quit the adventure? "
-     *                        - Set the current room ID to Config.FAIL if that character returned is 
-     *                          'y'
-     *                     - If the returned value is -2:
-     *                        - read a String using the promptString method with a prompt of:
-     *                          "Bookmarking current location: curRoom. Enter bookmark filename: ", 
-     *                          where curRoom is the current room ID.
-     *                        - Call the saveBookmark method and output (terminated by a new line):
-     *                           - if successful: "Bookmark saved in fSave"
-     *                           - if unsuccessful: "Error saving bookmark in fSave"
-     *                       where fSave is the String returned by promptString.
-     *                     - Otherwise: Set the current room ID to the room id at index 
-     *                                  Config.TRAN_ROOM_ID of the selected transition.
-     *                   - Otherwise, the value returned by probTrans is not null: make this value
-     *                     the current room ID.
-     *            - Continue the game loop until the current room ID is Config.SUCCESS or
-     *              Config.FAIL.
-     *            - If the current room ID is Config.FAIL, print out the message (terminated by a 
-     *              line): "You failed to complete the adventure. Better luck next time!"
-     *            - Otherwise: print out the message (terminated by a line): 
-     *              "Congratulations! You successfully completed the adventure!"
-     *       - Prompt for a char using the promptChar method with the prompt:
-     *         "Do you want to try again? "
-     *   - Repeat until the character returned by promptChar is an 'n'
-     *   - Print out "Thank you for playing!", terminated by a newline.
+
      *
      * @param args Unused
      */
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        char returnedChar;
+        System.out.println("Welcome to this choose your own adventure system!");
+        do {
+            promptString(sc, "Please enter the story filename: ");
+            returnedChar = promptChar(sc, "Do you want to try again? ");
+        } while (!(returnedChar == 'n'));
+        System.out.println("Thank you for playing!");
     }    
 }
