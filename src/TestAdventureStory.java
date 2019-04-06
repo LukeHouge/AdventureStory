@@ -4,9 +4,9 @@
 // Files:           AdventureStory.java TestAdventureStory.java
 // Course:          CS 200 Spring 2019
 //
-// Author:          Marc Renault
-// Email:           mrenault@cs.wisc.edu
-// Lecturer's Name: self
+// Author:          Luke Houge
+// Email:           lhouge@cs.wisc.edu
+// Lecturer's Name: Marc Renault
 //
 ///////////////////////////// CREDIT OUTSIDE HELP /////////////////////////////
 //
@@ -139,7 +139,7 @@ public class TestAdventureStory {
             }
         }
         {
-            Scanner in2 = new Scanner("     hello!\n");
+            Scanner in2 = new Scanner("     Hello!\n");
             char expected2 = 'h';
             char result2 = AdventureStory.promptChar(in2, "Enter: ");
             if(expected2 != result2) {
