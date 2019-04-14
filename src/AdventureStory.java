@@ -440,6 +440,15 @@ public class AdventureStory {
      * @param rooms ArrayList containing the room details.
      */
     public static void displayRoom(String id, ArrayList<String[]> rooms) {
+        String[] roomDetails = getRoomDetails(id, rooms);
+        for (int i = Config.DISPLAY_WIDTH; i>0; i--) {
+            System.out.println(Config.LINE_CHAR);
+        }
+        printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_TITLE]);
+        printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_DESC]);
+        for (int i = Config.DISPLAY_WIDTH; i>0; i--) {
+            System.out.println(Config.LINE_CHAR);
+        }
     }
 
     /**
