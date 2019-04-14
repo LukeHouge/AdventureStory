@@ -24,9 +24,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.PrintWriter;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.lang.*;
 
 public class AdventureStory {
@@ -174,8 +172,24 @@ public class AdventureStory {
      */
     public static boolean parseFile(String fName, ArrayList<String[]> rooms,
                                     ArrayList<ArrayList<String[]> > trans,
-                                    String[] curRoom) {
-            return true;
+                                    String[] curRoom) throws FileNotFoundException{ //TODO: added throws ok??
+        FileReader fr = new FileReader(fName);
+        try {
+            int i;
+            while ((i=fr.read()) != -1) {
+                System.out.print((char) i);
+            }
+        }
+        catch(IOException ex){
+            System.out.println("Error reading file: " + fName);
+        }
+        catch(RuntimeException ex){
+            System.out.println("Unable to read first line from file: " + fName);
+        }
+        finally {
+            inputStream.close();
+        }
+        return true;
     }
 
     /**
