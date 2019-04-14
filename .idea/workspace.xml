@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b05cb755-10cf-49d5-9686-465a6c4b9966" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AdventureStory/AdventureStory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AdventureStory/TestAdventureStory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AdventureStory/TestAdventureStory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AdventureStory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AdventureStory.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -16,17 +15,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="453" column="7" lean-forward="true" selection-start-line="453" selection-start-column="7" selection-end-line="453" selection-end-column="7" />
+            <state relative-caret-position="433">
+              <caret line="181" column="30" lean-forward="true" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="30" />
               <folding>
                 <element signature="e#0#26055#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#24518#24519#0" expanded="true" />
-                <element signature="e#24545#24546#0" expanded="true" />
+                <element signature="e#25833#25834#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="5" selection-start-column="5" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -59,6 +66,7 @@
       <list>
         <option value="$PROJECT_DIR$/src/TestAdventureStory.java" />
         <option value="$PROJECT_DIR$/src/AdventureStory.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -96,7 +104,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554735703886" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555207628002" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -205,11 +213,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554580509617</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="starting to add parseFile method">
+      <created>1555207043009</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1555207043009</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5844000" />
+    <option name="totallyTimeSpent" value="6449000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -230,8 +245,41 @@
       <window_info id="TODO" order="3" sideWeight="0.50377357" side_tool="true" weight="0.15965052" />
       <window_info id="Favorites" order="4" sideWeight="0.5022472" side_tool="true" weight="0.1916972" />
       <window_info id="Capture Tool" order="5" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.495228" visible="true" weight="0.2319301" />
-      <window_info active="true" id="Structure" order="7" sideWeight="0.504772" side_tool="true" visible="true" weight="0.2319301" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.495228" visible="true" weight="0.2319301" />
+      <window_info id="Structure" order="7" sideWeight="0.504772" side_tool="true" weight="0.2319301" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Messages" order="1" weight="0.16416733" />
+      <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.21711569" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.23690204" />
+      <window_info anchor="bottom" id="Debug" order="7" visible="true" weight="0.2549329" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="right" id="Version Control" order="0" sideWeight="0.49204665" visible="true" weight="0.3081811" />
+      <window_info anchor="right" id="Maven" order="1" sideWeight="0.49905124" weight="0.32962668" />
+      <window_info anchor="right" id="Palette" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Palette&#9;" order="5" />
+      <window_info anchor="right" id="Database" order="6" sideWeight="0.49905124" weight="0.32962668" />
+      <window_info anchor="right" id="Maven Projects" order="7" weight="0.32967034" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="8" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="9" sideWeight="0.49905124" weight="0.2494043" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="10" weight="0.25" />
+      <window_info anchor="right" id="Problems" order="11" visible="true" weight="0.31684983" />
+      <window_info anchor="right" id="Terminal" order="12" sideWeight="0.50795335" side_tool="true" weight="0.30857822" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Image Layers" order="0" />
+      <window_info id="Designer" order="1" />
+      <window_info id="UI Designer" order="2" />
+      <window_info id="TODO" order="3" sideWeight="0.50377357" side_tool="true" weight="0.15965052" />
+      <window_info id="Favorites" order="4" sideWeight="0.5022472" side_tool="true" weight="0.1916972" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.495228" visible="true" weight="0.2319301" />
+      <window_info id="Structure" order="7" sideWeight="0.504772" side_tool="true" visible="true" weight="0.2319301" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Messages" order="1" weight="0.1648265" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
@@ -255,7 +303,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="10" weight="0.25" />
       <window_info anchor="right" id="Problems" order="11" visible="true" weight="0.31684983" />
       <window_info anchor="right" id="Terminal" order="12" sideWeight="0.50795335" side_tool="true" visible="true" weight="0.30857822" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -269,7 +317,8 @@
     <MESSAGE value="adding main for milestone 1" />
     <MESSAGE value="fixing char to always lowercase" />
     <MESSAGE value="adding CS header" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding CS header" />
+    <MESSAGE value="starting to add parseFile method" />
+    <option name="LAST_COMMIT_MESSAGE" value="starting to add parseFile method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -300,14 +349,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AdventureStory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="453" column="7" lean-forward="true" selection-start-line="453" selection-start-column="7" selection-end-line="453" selection-end-column="7" />
+        <state relative-caret-position="433">
+          <caret line="181" column="30" lean-forward="true" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="30" />
           <folding>
             <element signature="e#0#26055#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#24518#24519#0" expanded="true" />
-            <element signature="e#24545#24546#0" expanded="true" />
+            <element signature="e#25833#25834#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>

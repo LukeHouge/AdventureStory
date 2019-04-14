@@ -172,13 +172,12 @@ public class AdventureStory {
      */
     public static boolean parseFile(String fName, ArrayList<String[]> rooms,
                                     ArrayList<ArrayList<String[]> > trans,
-                                    String[] curRoom) throws FileNotFoundException{ //TODO: added throws ok??
-        FileReader fr = new FileReader(fName);
+                                    String[] curRoom) {
+        Scanner sc = new Scanner(System.in);
         try {
-            int i;
-            while ((i=fr.read()) != -1) {
-                System.out.print((char) i);
-            }
+            File file=new File(fName);
+            sc = new Scanner(file);
+            sc.useDelimiter("\\Z");
         }
         catch(IOException ex){
             System.out.println("Error reading file: " + fName);
@@ -186,9 +185,7 @@ public class AdventureStory {
         catch(RuntimeException ex){
             System.out.println("Unable to read first line from file: " + fName);
         }
-        finally {
-            inputStream.close();
-        }
+        parseStory(sc, rooms, trans, curRoom);
         return true;
     }
 
