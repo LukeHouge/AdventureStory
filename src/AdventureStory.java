@@ -478,7 +478,17 @@ public class AdventureStory {
      */
     public static ArrayList<String[]> displayTransitions(String id, ArrayList<String[]> rooms,
                                                          ArrayList<ArrayList<String[]> > trans) {
-        return null;
+        int index = getRoomIndex(id, rooms);
+        if (index == -1) {
+            return null;
+        }
+        else if (!(trans.get(index).equals(Config.SUCCESS) || trans.get(index).equals(Config.FAIL))){
+            for (int i=trans.get(index).size(); i>0; i++) {
+                if (trans.get(index).get(i)[Config.TRAN_PROB] != null) {
+                    System.out.println(i+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
+                }
+            }
+        }
     }
 
     /**
