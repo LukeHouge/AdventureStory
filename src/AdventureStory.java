@@ -318,7 +318,70 @@ public class AdventureStory {
     public static boolean parseStory(Scanner sc, ArrayList<String[]> rooms,
                                      ArrayList<ArrayList<String[]> > trans,
                                      String[] curRoom) {
-        return true;
+        String[] temp;
+        String[] tempTran;
+        int count = 1;
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.charAt(0) == '#') {
+                // IGNORE
+                continue;
+            }
+            else if (line.charAt(0) == 'R') {
+                temp = rooms.get(count);
+                // sets the array position for the room ID to the second character of the line,
+                // converted to a string so it can go in the string array
+                temp[Config.ROOM_ID] = String.valueOf(line.charAt(1)).trim();
+                // Gets the rest of the string after first occurrence of a ':' char
+                temp[Config.ROOM_TITLE] = line.substring(line.lastIndexOf(':') + 1).trim();
+                while (sc.hasNextLine()) {
+                    line = sc.nextLine().trim();
+                    if (line == ";;;") {
+                        // skip to the next line
+                        continue;
+                    } else {
+                        line += "\n";
+                        temp[Config.TRAN_DESC] += line;
+                    }
+                }
+                while (sc.hasNextLine()) {
+                    line = sc.nextLine().trim();
+                    if (line.charAt(0) != 'R') {
+                        int tranCount = 0;
+                        tempTran = trans.get(count).get(Config.TRAN_DESC);
+                        if (line == Config.FAIL || line == Config.SUCCESS) {
+                            tempTran[0] = line;
+                        }
+                        else if (line.charAt(0) == ':') {
+                            tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
+                                    line.indexOf("->")).trim();
+                            tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf("->") + 1).trim();
+                            tempTran[Config.TRAN_PROB] = null;
+
+                        }
+                        trans.get(count).set(tranCount, tempTran);
+                        tranCount ++;
+                    }
+                    else {
+                        break;
+                    }
+                    continue;
+                }
+            }
+            rooms.set(count, temp);
+            count ++;
+        }
+        if (curRoom != null) {
+            curRoom[0] = rooms.get(0)[Config.ROOM_ID];
+        }
+        if ((trans.size() == 0) || (rooms.size() == 0)) {
+            if (trans.size() == rooms.size()) {
+                return true;
+            }
+        }
+        System.out.println("Error parsing file: rooms or transitions not properly parsed.");
+        return false;
+
     }
 
     /**
@@ -500,6 +563,7 @@ public class AdventureStory {
                 }
             }
         }
+        return trans.get(index);
     }
 
     /**
