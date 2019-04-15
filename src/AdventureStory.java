@@ -319,6 +319,7 @@ public class AdventureStory {
                                      ArrayList<ArrayList<String[]> > trans,
                                      String[] curRoom) {
         int count = 1;
+        int tranCount = 0;
         while (sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.charAt(0) == '#') {
@@ -344,37 +345,37 @@ public class AdventureStory {
                 }
                 rooms.add(temp);
             }
-            else {
-                int tranCount = 0;
+            else if (line.charAt(0) == ':') {
                 String[] tempTran = new String[3];
-                if (line == Config.FAIL || line == Config.SUCCESS) {
-                    tempTran[0] = line;
-                }
-                else if (line.charAt(0) == ':') {
-                    tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
-                            line.indexOf("->")).trim();
-                    tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf("->") + 1).trim();
-                    tempTran[Config.TRAN_PROB] = null;
-                }
+                tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
+                        line.indexOf("->")).trim();
+                tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
+                tempTran[Config.TRAN_PROB] = null;
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                 trans.add(tempArrList);
                 trans.get(0).add(tempTran);
                 tranCount ++;
-                }
-
-            count ++;
+                count ++;
+            }
+            else if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
+                String[] tempTran = new String[3];
+                tempTran[0] = line;
+                ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                trans.get(tranCount-1).add(tempTran);
+                tranCount ++;
+                count ++;
+            }
         }
         if (curRoom != null) {
             curRoom[0] = rooms.get(0)[Config.ROOM_ID];
         }
         if ((trans.size() == 0) || (rooms.size() == 0)) {
-            if (trans.size() == rooms.size()) {
-                return true;
+            if (!(trans.size() == rooms.size())) {
+                System.out.println("Error parsing file: rooms or transitions not properly parsed.");
+                return false;
             }
         }
-        System.out.println("Error parsing file: rooms or transitions not properly parsed.");
-        return false;
-
+        return true;
     }
 
     /**
