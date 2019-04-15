@@ -606,17 +606,61 @@ public class AdventureStory {
      *   - Repeat until the character returned by promptChar is an 'n'
      *   - Print out "Thank you for playing!", terminated by a newline.
      *
-
+     * Milestone #2:
+     *   - Print out the welcome message: "Welcome to this choose your own adventure system!"
+     *   - Begin the play again loop:
+     *       - Prompt for a filename using the promptString method with the prompt:
+     *         "Please enter the story filename: "
+     *       - If the file is successfully parsed using the parseFile method:
+     *            - Begin the game loop with the current room ID being that in the 0 index of the
+     *              String array passed into the parseFile method as the 4th parameter
+     *                 - Output the room details via the displayRoom method
+     *                 - Output the transitions via the displayTransitions method
+     *                 - If the current transition is not terminal:
+     *                   - Prompt the user for a number between -1 and the number of transitions
+     *                     minus 1, using the promptInt method with a prompt of "Choose: "
+     *                   - If the returned value is -1:
+     *                      - read a char using promptChar with a prompt of
+     *                        "Are you sure you want to quit the adventure? "
+     *                      - Set the current room ID to Config.FAIL if that character returned is 'y'
+     *                   - Otherwise: Set the current room ID to the room ID at index
+     *                                Config.TRAN_ROOM_ID of the selected transition.
+     *                 - Otherwise, the current transition is terminal: Set the current room ID to
+     *                   the terminal state in the transition String array.
+     *            - Continue the game loop until the current room ID is Config.SUCCESS or
+     *              Config.FAIL
+     *            - If the current room ID is Config.FAIL, print out the message (terminated by a
+     *              line): "You failed to complete the adventure. Better luck next time!"
+     *            - Otherwise: print out the message (terminated by a line):
+     *              "Congratulations! You successfully completed the adventure!"
+     *       - Prompt for a char using the promptChar method with the prompt:
+     *         "Do you want to try again? "
+     *   - Repeat until the character returned by promptChar is an 'n'
+     *   - Print out "Thank you for playing!", terminated by a newline.
      *
      * @param args Unused
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        char returnedChar;
+        char returnedChar = 'y';
+        int count = 0;
+        ArrayList<String[]> arrRooms = new ArrayList<String[]>();
+        ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
+        String[] curRoom = new String[1];
+        String fileName;
         System.out.println("Welcome to this choose your own adventure system!");
         do {
-            promptString(sc, "Please enter the story filename: ");
-            returnedChar = promptChar(sc, "Do you want to try again? ");
+            fileName = promptString(sc, "Please enter the story filename: ");
+            if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
+                while (!(curRoom[count].equals(Config.FAIL)) || !(curRoom[count].equals(Config.SUCCESS))) {
+                    displayRoom(curRoom[count], arrRooms);
+                    displayTransitions(curRoom[count], arrRooms, arrTrans);
+
+                }
+            }
+            else {
+                returnedChar = promptChar(sc, "Do you want to try again? ");
+            }
         } while (!(returnedChar == 'n'));
         System.out.println("Thank you for playing!");
     }    
