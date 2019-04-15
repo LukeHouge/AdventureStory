@@ -327,7 +327,6 @@ public class AdventureStory {
             }
             else if (line.charAt(0) == 'R') {
                 String[] temp = new String[3];
-                String[] tempTran = new String[3];
                 // sets the array position for the room ID to the second character of the line,
                 // converted to a string so it can go in the string array
                 temp[Config.ROOM_ID] = String.valueOf(line.charAt(1)).trim();
@@ -336,38 +335,32 @@ public class AdventureStory {
                 while (sc.hasNextLine()) {
                     line = sc.nextLine().trim();
                     if (!(line.equals(";;;"))) {
-                        line += "\n";
-                        tempTran[Config.TRAN_DESC] += line;
+                        temp[Config.ROOM_DESC] += line;
+                        temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].replaceAll("null", "");
+
                         break;
                     }
+                    line += "\n";
                 }
                 rooms.add(temp);
-                while (sc.hasNextLine()) {
-                    line = sc.nextLine().trim();
-                    if (line.charAt(0) != 'R') {
-                        int tranCount = 0;
-                        if (line == Config.FAIL || line == Config.SUCCESS) {
-                            tempTran[0] = line;
-                        }
-                        else if (line.charAt(0) == ':') {
-                            tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
-                                    line.indexOf("->")).trim();
-                            tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf("->") + 1).trim();
-                            tempTran[Config.TRAN_PROB] = null;
-
-                        }
-                        ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
-                        trans.add(tempArrList);
-                        trans.get(0).add(tempTran);
-
-                        tranCount ++;
-                    }
-                    else {
-                        break;
-                    }
-                    continue;
-                }
             }
+            else {
+                int tranCount = 0;
+                String[] tempTran = new String[3];
+                if (line == Config.FAIL || line == Config.SUCCESS) {
+                    tempTran[0] = line;
+                }
+                else if (line.charAt(0) == ':') {
+                    tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
+                            line.indexOf("->")).trim();
+                    tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf("->") + 1).trim();
+                    tempTran[Config.TRAN_PROB] = null;
+                }
+                ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                trans.add(tempArrList);
+                trans.get(0).add(tempTran);
+                tranCount ++;
+                }
 
             count ++;
         }
