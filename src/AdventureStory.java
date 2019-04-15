@@ -175,7 +175,7 @@ public class AdventureStory {
                                     String[] curRoom) {
         Scanner sc = new Scanner(System.in);
         try {
-            File file=new File(fName);
+            File file = new File(fName);
             sc = new Scanner(file);
             sc.useDelimiter("\\Z");
         }
@@ -322,7 +322,7 @@ public class AdventureStory {
         int tranCount = 0;
         while (sc.hasNextLine()) {
             String line = sc.nextLine().trim();
-            if (line.charAt(0) == '#') {
+            if (line.equals("") || line.charAt(0) == '#') {
                 // IGNORE
                 continue;
             }
@@ -359,8 +359,9 @@ public class AdventureStory {
             }
             else if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
                 String[] tempTran = new String[3];
-                tempTran[0] = line;
+                tempTran[Config.TRAN_DESC] = line;
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                trans.add(tempArrList);
                 trans.get(tranCount-1).add(tempTran);
                 tranCount ++;
                 count ++;
@@ -397,7 +398,8 @@ public class AdventureStory {
     public static int getRoomIndex(String id, ArrayList<String[]> rooms) {
         for(String[] row : rooms) {
             if (id == row[0]) {
-                return rooms.indexOf(row);
+                int location = rooms.indexOf(row);
+                return location;
             }
         }
         return -1;
@@ -429,7 +431,7 @@ public class AdventureStory {
      */
     public static void printLine(int len, char c) {
         for (int i = 0; i < len; i++) {
-            System.out.println(c);
+            System.out.print(c);
         }
     }
 
@@ -456,6 +458,7 @@ public class AdventureStory {
      * @param val The string to print out.
      */
     public static void printString(int len, String val) {
+        System.out.println();
         int count = 0;
         for (int i = 0; i < val.length(); i++){
             if (val.charAt(i) == '\n') {
@@ -464,7 +467,7 @@ public class AdventureStory {
             }
             if (count == len) {
                 if (Character.isWhitespace(val.charAt(i))) {
-                    System.out.println();
+                    System.out.print("\n");
                     count = 0;
                 }
                 else if (!Character.isLetterOrDigit(val.charAt(i))) {
@@ -474,7 +477,7 @@ public class AdventureStory {
                     count++;
                 }
                 else {
-                    if (Character.isWhitespace(val.charAt(i-1))) {
+                    if (Character.isWhitespace(val.charAt(i))) {
                         System.out.println();
                         count = 0;
                         System.out.print(val.charAt(i));
@@ -488,6 +491,10 @@ public class AdventureStory {
                         count++;
                     }
                 }
+            }
+            else {
+                System.out.print(val.charAt(i));
+                count ++;
             }
         }
         System.out.println();
@@ -509,14 +516,11 @@ public class AdventureStory {
      */
     public static void displayRoom(String id, ArrayList<String[]> rooms) {
         String[] roomDetails = getRoomDetails(id, rooms);
-        for (int i = Config.DISPLAY_WIDTH; i>0; i--) {
-            System.out.println(Config.LINE_CHAR);
-        }
+        printLine(Config.DISPLAY_WIDTH, Config.LINE_CHAR);
         printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_TITLE]);
         printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_DESC]);
-        for (int i = Config.DISPLAY_WIDTH; i>0; i--) {
-            System.out.println(Config.LINE_CHAR);
-        }
+        printLine(Config.DISPLAY_WIDTH, Config.LINE_CHAR);
+        System.out.println();
     }
 
     /**
@@ -550,9 +554,13 @@ public class AdventureStory {
         if (index == -1) {
             return null;
         }
-        else if (!(trans.get(index).equals(Config.SUCCESS) || trans.get(index).equals(Config.FAIL))){
-            for (int i=trans.get(index).size(); i>0; i++) {
-                if (trans.get(index).get(i)[Config.TRAN_PROB] != null) {
+        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[0] == Config.FAIL) ||
+                (trans.get(index).get(0)[0] == Config.SUCCESS))) {
+            return trans.get(index);
+        }
+        else {
+            for (int i = trans.get(index).size()-1; i>0; i--) {
+                if (trans.get(index).get(i)[Config.TRAN_PROB] == null) {
                     System.out.println(i+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
                 }
             }
@@ -644,8 +652,13 @@ public class AdventureStory {
         Scanner sc = new Scanner(System.in);
         char returnedChar = 'y';
         int count = 0;
-        ArrayList<String[]> arrRooms = new ArrayList<String[]>();
-        ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
+        int choose = 0;
+        ArrayList<String[]> arrRooms = new ArrayList<String[]>(100);
+        ArrayList<ArrayList<String[]>> arrTrans = new ArrayList<ArrayList<String[]>>(100);
+        for (int i = 0; i < 100; ++i) {
+            ArrayList<String[]> row = new ArrayList<String[]>();
+            arrTrans.add(row);
+        }
         String[] curRoom = new String[1];
         String fileName;
         System.out.println("Welcome to this choose your own adventure system!");
@@ -655,7 +668,27 @@ public class AdventureStory {
                 while (!(curRoom[count].equals(Config.FAIL)) || !(curRoom[count].equals(Config.SUCCESS))) {
                     displayRoom(curRoom[count], arrRooms);
                     displayTransitions(curRoom[count], arrRooms, arrTrans);
-
+                    choose = promptInt(sc, "Choose", -1, arrTrans.size()-1);
+                    if (!(curRoom[count].equals(Config.FAIL)) || !(curRoom[count].equals(Config.SUCCESS))) {
+                        returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
+                        if (choose == -1) {
+                            if (returnedChar == 'y') {
+                                curRoom[0] = Config.FAIL;
+                            }
+                        }
+                        else {
+                            curRoom[0] = arrTrans.get(count).get(count)[Config.TRAN_ROOM_ID]; //FIXME
+                        }
+                    }
+                    else {
+                        // FIXME
+                    }
+                    if (curRoom[0] == Config.FAIL) {
+                        System.out.println("You failed to complete the adventure. Better luck next time!");
+                    }
+                    else {
+                        System.out.println("Congratulations! You successfully completed the adventure!");
+                    }
                 }
             }
             else {
