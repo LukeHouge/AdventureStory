@@ -318,8 +318,6 @@ public class AdventureStory {
     public static boolean parseStory(Scanner sc, ArrayList<String[]> rooms,
                                      ArrayList<ArrayList<String[]> > trans,
                                      String[] curRoom) {
-        String[] temp;
-        String[] tempTran;
         int count = 1;
         while (sc.hasNextLine()) {
             String line = sc.nextLine().trim();
@@ -328,7 +326,8 @@ public class AdventureStory {
                 continue;
             }
             else if (line.charAt(0) == 'R') {
-                temp = rooms.get(count);
+                String[] temp = new String[3];
+                String[] tempTran = new String[3];
                 // sets the array position for the room ID to the second character of the line,
                 // converted to a string so it can go in the string array
                 temp[Config.ROOM_ID] = String.valueOf(line.charAt(1)).trim();
@@ -336,19 +335,17 @@ public class AdventureStory {
                 temp[Config.ROOM_TITLE] = line.substring(line.lastIndexOf(':') + 1).trim();
                 while (sc.hasNextLine()) {
                     line = sc.nextLine().trim();
-                    if (line == ";;;") {
-                        // skip to the next line
-                        continue;
-                    } else {
+                    if (!(line.equals(";;;"))) {
                         line += "\n";
-                        temp[Config.TRAN_DESC] += line;
+                        tempTran[Config.TRAN_DESC] += line;
+                        break;
                     }
                 }
+                rooms.add(temp);
                 while (sc.hasNextLine()) {
                     line = sc.nextLine().trim();
                     if (line.charAt(0) != 'R') {
                         int tranCount = 0;
-                        tempTran = trans.get(count).get(Config.TRAN_DESC);
                         if (line == Config.FAIL || line == Config.SUCCESS) {
                             tempTran[0] = line;
                         }
@@ -359,7 +356,10 @@ public class AdventureStory {
                             tempTran[Config.TRAN_PROB] = null;
 
                         }
-                        trans.get(count).set(tranCount, tempTran);
+                        ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                        trans.add(tempArrList);
+                        trans.get(0).add(tempTran);
+
                         tranCount ++;
                     }
                     else {
@@ -368,7 +368,7 @@ public class AdventureStory {
                     continue;
                 }
             }
-            rooms.set(count, temp);
+
             count ++;
         }
         if (curRoom != null) {
