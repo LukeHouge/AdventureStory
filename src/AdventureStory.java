@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.io.*;
 import java.lang.*;
+import java.util.Arrays;
 
 public class AdventureStory {
 
@@ -559,9 +560,9 @@ public class AdventureStory {
             return trans.get(index);
         }
         else {
-            for (int i = trans.get(index).size()-1; i>0; i--) {
+            for (int i = 0; i<trans.get(index).size()-1; i++) {
                 if (trans.get(index).get(i)[Config.TRAN_PROB] == null) {
-                    System.out.println(i+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
+                    System.out.println((i+1)+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
                 }
             }
         }
