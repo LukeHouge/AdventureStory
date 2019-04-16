@@ -84,7 +84,6 @@ public class AdventureStory {
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
-        sc = new Scanner(System.in);
         System.out.print(prompt);
         String input = sc.nextLine();
         for (int i=0; i<input.length(); i++){
@@ -107,7 +106,6 @@ public class AdventureStory {
      * @return Returns the string entered by the user with leading and trailing whitespace removed.
      */    
     public static String promptString(Scanner sc, String prompt) {
-        sc = new Scanner(System.in);
         System.out.print(prompt);
         String input = sc.nextLine();
         return input.trim();
@@ -321,7 +319,7 @@ public class AdventureStory {
      * @return false if there is a parsing error. Otherwise, true. 
      */ 
     public static boolean parseStory(Scanner sc, ArrayList<String[]> rooms,
-                                     ArrayList<ArrayList<String[]> > trans,
+                                     ArrayList<ArrayList<String[]> > trans, //FIXME: finish stuff in insteructins like outpittig if not properly parsed
                                      String[] curRoom) {
         int count = 0;
         int tranCount = 0;
@@ -334,7 +332,7 @@ public class AdventureStory {
                 continue;
             }
             else if (line.charAt(0) == 'R') {
-                String[] temp = new String[3];
+                String[] temp = new String[Config.ROOM_DET_LEN];
                 // sets the array position for the room ID to the substring between 'R' and ':'
                 temp[Config.ROOM_ID] = line.substring(line.indexOf("R") + 1, line.indexOf(":")).trim();
                 // Gets the rest of the string after first occurrence of a ':' char
@@ -344,16 +342,20 @@ public class AdventureStory {
                     if (!(line.equals(";;;"))) {
                         temp[Config.ROOM_DESC] += line;
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].replaceAll("null", "");
-
+                        if (line.equals("")) {
+                            temp[Config.ROOM_DESC] += "\n";
+                        }
+                        continue;
+                    }
+                    else {
                         break;
                     }
-                    line += "\n";
                 }
                 rooms.add(temp);
             }
             else if (line.charAt(0) == ':') {
                 do {
-                    String[] tempTran = new String[3];
+                    String[] tempTran = new String[Config.TRAN_DET_LEN];
                     tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
                             line.indexOf("->")).trim();
                     tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
@@ -477,7 +479,7 @@ public class AdventureStory {
                 System.out.print(val.charAt(i));
                 count = 0;
             }
-            if (count == len) {
+            if (count == len-1) {
                 if (Character.isWhitespace(val.charAt(i))) {
                     System.out.print("\n");
                     count = 0;
@@ -489,7 +491,7 @@ public class AdventureStory {
                     count++;
                 }
                 else {
-                    if (Character.isWhitespace(val.charAt(i))) {
+                    if (Character.isWhitespace(val.charAt(i-1))) {
                         System.out.println();
                         count = 0;
                         System.out.print(val.charAt(i));
@@ -576,7 +578,7 @@ public class AdventureStory {
         else {
             for (int i = 0; i<trans.get(index).size(); i++) {
                 if (trans.get(index).get(i)[Config.TRAN_PROB] == null) {
-                    System.out.println((i+1)+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
+                    System.out.println((i)+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
                 }
             }
         }
@@ -664,7 +666,6 @@ public class AdventureStory {
      * @param args Unused
      */
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         char returnedChar = 'y';
         int count = 0;
         int transCount = 1;
@@ -679,6 +680,7 @@ public class AdventureStory {
         String fileName;
         System.out.println("Welcome to this choose your own adventure system!");
         do {
+            Scanner sc = new Scanner(System.in);
             fileName = promptString(sc, "Please enter the story filename: ");
             if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
                 do {
@@ -686,7 +688,7 @@ public class AdventureStory {
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
                     if (!(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
                             && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
-                        choose = promptInt(sc, "Choose", -1, arrTrans.size()-1);
+                        choose = promptInt(sc, "Choose: ", -1, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
                         if (choose == -1) {
                             returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
                             if (returnedChar == 'y') {
@@ -694,7 +696,7 @@ public class AdventureStory {
                             }
                         }
                         else {
-                            curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose-1)[Config.TRAN_ROOM_ID];
+                            curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose)[Config.TRAN_ROOM_ID];
                         }
                     }
                     else {
