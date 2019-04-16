@@ -325,13 +325,13 @@ public class AdventureStory {
         int tranCount = 0;
         rooms.clear();
         trans.clear();
+        String line = sc.nextLine().trim();
         while (sc.hasNextLine()) {
-            String line = sc.nextLine().trim();
             if (line.equals("") || line.charAt(0) == '#') {
-                // IGNORE
+                line = sc.nextLine().trim();
                 continue;
             }
-            else if (line.charAt(0) == 'R') {
+            else if ((line.charAt(0) == 'R') && (Character.isDigit(line.charAt(1)))) {
                 String[] temp = new String[Config.ROOM_DET_LEN];
                 // sets the array position for the room ID to the substring between 'R' and ':'
                 temp[Config.ROOM_ID] = line.substring(line.indexOf("R") + 1, line.indexOf(":")).trim();
@@ -367,7 +367,6 @@ public class AdventureStory {
                     if (line.equals("")) {
                         break;
                     }
-                    tranCount ++;
                 } while (line.charAt(0) == ':');
                 count ++;
             }
@@ -377,8 +376,12 @@ public class AdventureStory {
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                 trans.add(tempArrList);
                 trans.get(count).add(tempTran);
+                line = sc.nextLine().trim();
                 tranCount ++;
                 count ++;
+            }
+            else {
+                line = sc.nextLine().trim();
             }
         }
         if (curRoom != null) {
@@ -712,7 +715,7 @@ public class AdventureStory {
                     transCount ++;
                 } while (!(curRoom[0].equals(Config.FAIL)) && !(curRoom[0].equals(Config.SUCCESS)));
             }
-            returnedChar = promptChar(sc, "Do you want to try again? ");
+            returnedChar = promptChar(new Scanner(System.in), "Do you want to try again? ");
         } while (!(returnedChar == 'n'));
         System.out.println("Thank you for playing!");
     }    
