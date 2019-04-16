@@ -262,7 +262,7 @@ public class TestAdventureStory {
             }
             if(passed) System.out.println("parseStory 1: passed"); 
             
-        }
+        } //TODO: add two tests (could do with double digit rooms and multiple transitions in different rooms
         
     }
 

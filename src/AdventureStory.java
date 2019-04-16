@@ -176,7 +176,7 @@ public class AdventureStory {
     public static boolean parseFile(String fName, ArrayList<String[]> rooms,
                                     ArrayList<ArrayList<String[]> > trans,
                                     String[] curRoom) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc;
         try {
             File file = new File(fName);
             sc = new Scanner(file);
@@ -325,6 +325,8 @@ public class AdventureStory {
                                      String[] curRoom) {
         int count = 0;
         int tranCount = 0;
+        rooms.clear();
+        trans.clear();
         while (sc.hasNextLine()) {
             String line = sc.nextLine().trim();
             if (line.equals("") || line.charAt(0) == '#') {
@@ -333,9 +335,8 @@ public class AdventureStory {
             }
             else if (line.charAt(0) == 'R') {
                 String[] temp = new String[3];
-                // sets the array position for the room ID to the second character of the line,
-                // converted to a string so it can go in the string array
-                temp[Config.ROOM_ID] = String.valueOf(line.charAt(1)).trim();
+                // sets the array position for the room ID to the substring between 'R' and ':'
+                temp[Config.ROOM_ID] = line.substring(line.indexOf("R") + 1, line.indexOf(":")).trim();
                 // Gets the rest of the string after first occurrence of a ':' char
                 temp[Config.ROOM_TITLE] = line.substring(line.lastIndexOf(':') + 1).trim();
                 while (sc.hasNextLine()) {
@@ -682,9 +683,9 @@ public class AdventureStory {
             if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
                 do {
                     displayRoom(curRoom[0], arrRooms);
-                    displayTransitions(curRoom[0], arrRooms, arrTrans);                                 // TODO: need to keep track of room chosen, not just counting up by 1
+                    displayTransitions(curRoom[0], arrRooms, arrTrans);
                     if (!(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
-                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {                        // TODO: way to loop through until all transition done, right now I think just keeps goign until error?
+                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
                         choose = promptInt(sc, "Choose", -1, arrTrans.size()-1);
                         if (choose == -1) {
                             returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
@@ -693,11 +694,11 @@ public class AdventureStory {
                             }
                         }
                         else {
-                            curRoom[0] = arrTrans.get(count).get(choose-1)[Config.TRAN_ROOM_ID]; //FIXME, should be Config.ID or 0?   choose-1 is FINE
+                            curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose-1)[Config.TRAN_ROOM_ID];
                         }
                     }
                     else {
-                        curRoom[0] = arrTrans.get(count).get(0)[0];
+                        curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0];
                     }
                     if (curRoom[0].equals(Config.FAIL)) {
                         System.out.println("You failed to complete the adventure. Better luck next time!");
