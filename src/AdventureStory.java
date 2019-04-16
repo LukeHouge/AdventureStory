@@ -84,6 +84,7 @@ public class AdventureStory {
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
+        sc = new Scanner(System.in);
         System.out.print(prompt);
         String input = sc.nextLine();
         for (int i=0; i<input.length(); i++){
@@ -106,6 +107,7 @@ public class AdventureStory {
      * @return Returns the string entered by the user with leading and trailing whitespace removed.
      */    
     public static String promptString(Scanner sc, String prompt) {
+        sc = new Scanner(System.in);
         System.out.print(prompt);
         String input = sc.nextLine();
         return input.trim();
@@ -182,9 +184,11 @@ public class AdventureStory {
         }
         catch(IOException ex){
             System.out.println("Error reading file: " + fName);
+            return false;
         }
         catch(RuntimeException ex){
             System.out.println("Unable to read first line from file: " + fName);
+            return false;
         }
         parseStory(sc, rooms, trans, curRoom);
         return true;
@@ -319,7 +323,7 @@ public class AdventureStory {
     public static boolean parseStory(Scanner sc, ArrayList<String[]> rooms,
                                      ArrayList<ArrayList<String[]> > trans,
                                      String[] curRoom) {
-        int count = 1;
+        int count = 0;
         int tranCount = 0;
         while (sc.hasNextLine()) {
             String line = sc.nextLine().trim();
@@ -347,15 +351,21 @@ public class AdventureStory {
                 rooms.add(temp);
             }
             else if (line.charAt(0) == ':') {
-                String[] tempTran = new String[3];
-                tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
-                        line.indexOf("->")).trim();
-                tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
-                tempTran[Config.TRAN_PROB] = null;
-                ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
-                trans.add(tempArrList);
-                trans.get(0).add(tempTran);
-                tranCount ++;
+                do {
+                    String[] tempTran = new String[3];
+                    tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
+                            line.indexOf("->")).trim();
+                    tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
+                    tempTran[Config.TRAN_PROB] = null;
+                    ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                    trans.add(tempArrList);
+                    trans.get(count).add(tempTran);
+                    line = sc.nextLine().trim();
+                    if (line.equals("")) {
+                        break;
+                    }
+                    tranCount ++;
+                } while (line.charAt(0) == ':');
                 count ++;
             }
             else if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
@@ -363,7 +373,7 @@ public class AdventureStory {
                 tempTran[Config.TRAN_DESC] = line;
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                 trans.add(tempArrList);
-                trans.get(tranCount-1).add(tempTran);
+                trans.get(count).add(tempTran);
                 tranCount ++;
                 count ++;
             }
@@ -398,7 +408,7 @@ public class AdventureStory {
      */
     public static int getRoomIndex(String id, ArrayList<String[]> rooms) {
         for(String[] row : rooms) {
-            if (id == row[0]) {
+            if (id.equals(row[0])) {
                 int location = rooms.indexOf(row);
                 return location;
             }
@@ -517,6 +527,9 @@ public class AdventureStory {
      */
     public static void displayRoom(String id, ArrayList<String[]> rooms) {
         String[] roomDetails = getRoomDetails(id, rooms);
+        if (roomDetails == null) {
+            return;
+        }
         printLine(Config.DISPLAY_WIDTH, Config.LINE_CHAR);
         printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_TITLE]);
         printString(Config.DISPLAY_WIDTH, roomDetails[Config.ROOM_DESC]);
@@ -555,12 +568,12 @@ public class AdventureStory {
         if (index == -1) {
             return null;
         }
-        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[0] == Config.FAIL) ||
-                (trans.get(index).get(0)[0] == Config.SUCCESS))) {
+        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[0].equals(Config.FAIL))
+                || (trans.get(index).get(0)[0].equals(Config.SUCCESS)))) {
             return trans.get(index);
         }
         else {
-            for (int i = 0; i<trans.get(index).size()-1; i++) {
+            for (int i = 0; i<trans.get(index).size(); i++) {
                 if (trans.get(index).get(i)[Config.TRAN_PROB] == null) {
                     System.out.println((i+1)+") " + trans.get(index).get(i)[Config.TRAN_DESC]);
                 }
@@ -653,9 +666,10 @@ public class AdventureStory {
         Scanner sc = new Scanner(System.in);
         char returnedChar = 'y';
         int count = 0;
+        int transCount = 1;
         int choose = 0;
-        ArrayList<String[]> arrRooms = new ArrayList<String[]>(100);
-        ArrayList<ArrayList<String[]>> arrTrans = new ArrayList<ArrayList<String[]>>(100);
+        ArrayList<String[]> arrRooms = new ArrayList<String[]>();
+        ArrayList<ArrayList<String[]>> arrTrans = new ArrayList<ArrayList<String[]>>();
         for (int i = 0; i < 100; ++i) {
             ArrayList<String[]> row = new ArrayList<String[]>();
             arrTrans.add(row);
@@ -666,35 +680,36 @@ public class AdventureStory {
         do {
             fileName = promptString(sc, "Please enter the story filename: ");
             if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
-                while (!(curRoom[count].equals(Config.FAIL)) || !(curRoom[count].equals(Config.SUCCESS))) {
-                    displayRoom(curRoom[count], arrRooms);
-                    displayTransitions(curRoom[count], arrRooms, arrTrans);
-                    choose = promptInt(sc, "Choose", -1, arrTrans.size()-1);
-                    if (!(curRoom[count].equals(Config.FAIL)) || !(curRoom[count].equals(Config.SUCCESS))) {
-                        returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
+                do {
+                    displayRoom(curRoom[0], arrRooms);
+                    displayTransitions(curRoom[0], arrRooms, arrTrans);                                 // TODO: need to keep track of room chosen, not just counting up by 1
+                    if (!(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
+                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {                        // TODO: way to loop through until all transition done, right now I think just keeps goign until error?
+                        choose = promptInt(sc, "Choose", -1, arrTrans.size()-1);
                         if (choose == -1) {
+                            returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
                             if (returnedChar == 'y') {
                                 curRoom[0] = Config.FAIL;
                             }
                         }
                         else {
-                            curRoom[0] = arrTrans.get(count).get(count)[Config.TRAN_ROOM_ID]; //FIXME
+                            curRoom[0] = arrTrans.get(count).get(choose-1)[Config.TRAN_ROOM_ID]; //FIXME, should be Config.ID or 0?   choose-1 is FINE
                         }
                     }
                     else {
-                        // FIXME
+                        curRoom[0] = arrTrans.get(count).get(0)[0];
                     }
-                    if (curRoom[0] == Config.FAIL) {
+                    if (curRoom[0].equals(Config.FAIL)) {
                         System.out.println("You failed to complete the adventure. Better luck next time!");
                     }
-                    else {
+                    else if (curRoom[0].equals(Config.SUCCESS)){
                         System.out.println("Congratulations! You successfully completed the adventure!");
                     }
-                }
+                    count ++;
+                    transCount ++;
+                } while (!(curRoom[0].equals(Config.FAIL)) && !(curRoom[0].equals(Config.SUCCESS)));
             }
-            else {
-                returnedChar = promptChar(sc, "Do you want to try again? ");
-            }
+            returnedChar = promptChar(sc, "Do you want to try again? ");
         } while (!(returnedChar == 'n'));
         System.out.println("Thank you for playing!");
     }    
