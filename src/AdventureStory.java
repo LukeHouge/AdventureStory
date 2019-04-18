@@ -402,6 +402,9 @@ public class AdventureStory {
                 return false;
             }
         }
+        if (trans.get(trans.size()-1).size() == 0) {
+            trans.remove(trans.size()-1);
+        }
         return true;
     }
 
