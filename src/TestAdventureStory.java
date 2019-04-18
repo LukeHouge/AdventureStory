@@ -52,7 +52,7 @@ public class TestAdventureStory {
 
         //Milestone 2 Tests
         testParseStory();
-        //TODO
+        testParseStoryZyBooks();
 
         //Milestone 3 Tests
         //TODO
@@ -216,51 +216,59 @@ public class TestAdventureStory {
                 = new Scanner("#!STORY\n" +
                               "R1: Room 1\nRoom 1 description\n;;;\n: Transition 1 -> 1\n: Transition 2 -> 2\n" +
                               "R2: Room 2 \n Room 2 description \n;;;\n =) \n");
-            ArrayList<String[]> arrRooms1 = new ArrayList<String[]>();
-            ArrayList<ArrayList<String[]> >  arrTrans1 = new ArrayList<ArrayList<String[]> >();
-            String[] curRoom1 = new String[1];
+            ArrayList<String[]> arrRooms = new ArrayList<String[]>();
+            ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
+            String[] curRoom = new String[1];
             boolean passed = true;
-            if(!AdventureStory.parseStory(testSc, arrRooms1, arrTrans1, curRoom1)) {
+            if(!AdventureStory.parseStory(testSc, arrRooms, arrTrans, curRoom)) {
                 System.out.println("parseStory 1: returned false instead of true.");
                 passed = false;
             }
             //Assuming normal Config.java
             //Expected ArrayList of room details:
-            ArrayList<String[]> expRooms1 =
+            ArrayList<String[]> expRooms =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"1",
                                                                       "Room 1",
                                                                       "Room 1 description"},
                                                                      {"2",
                                                                       "Room 2",
                                                                       "Room 2 description"}}));
-            if(!compareArrayListsArrays(arrRooms1, expRooms1)) {
+            if(!compareArrayListsArrays(arrRooms, expRooms)) {
                 System.out.println("parseStory 1: \nrooms ArrayList returned: \n" +
-                                   Arrays.deepToString(arrRooms1.toArray()) +
+                                   Arrays.deepToString(arrRooms.toArray()) +
                                    "\nExpected: \n" +
-                                   Arrays.deepToString(expRooms1.toArray()) + "\n");
+                                   Arrays.deepToString(expRooms.toArray()) + "\n");
                 passed = false;
             }
             //Expected ArrayList of ArrayList of transition details:
-            ArrayList<String[]> room1Trans1 =
+            ArrayList<String[]> room1Trans =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"Transition 1",
                                                                       "1",
                                                                       null},
                                                                      {"Transition 2",
                                                                       "2",
                                                                       null}}));
-            ArrayList<String[]> room2Trans2 =
+            ArrayList<String[]> room2Trans =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"=)", null, null}}));
-            ArrayList<ArrayList<String[]> > expTrans2 = new ArrayList<ArrayList<String[]> >();
-            expTrans2.add(room1Trans1);
-            expTrans2.add(room2Trans2);
-            if(!compare2dArrayLists(arrTrans1, expTrans2)) {
+            ArrayList<ArrayList<String[]> > expTrans = new ArrayList<ArrayList<String[]> >();
+            expTrans.add(room1Trans);
+            expTrans.add(room2Trans);
+            if(!compare2dArrayLists(arrTrans, expTrans)) {
                 System.out.println("parseStory 1: \ntransition ArrayList returned: \n" +
-                                   toString2dArrayLists(arrTrans1) +
+                                   toString2dArrayLists(arrTrans) +
                                    "\nExpected: \n" +
-                                   toString2dArrayLists(expTrans2) + "\n");
+                                   toString2dArrayLists(expTrans) + "\n");
                 passed = false;
             }
             if(passed) System.out.println("parseStory 1: passed");
+
+        } //TODO: add two tests (could do with double digit rooms and multiple transitions in different rooms
+        
+    }
+
+    private static void testParseStoryZyBooks() {
+        {
+            boolean passed = true;
 
             String[] story1Array = { "#!STORY", "# Eroneous comment", "# And another, good sir!",
                     "# And yet a third.", "R1: Home", "Home is where the heart is...", ";;;", ": Stay home -> 4",
@@ -437,8 +445,8 @@ public class TestAdventureStory {
             }
             if(passed) System.out.println("parseStoryZyBooks story2: passed");
 
-        } //TODO: add two tests (could do with double digit rooms and multiple transitions in different rooms
-        
+        }
+
     }
 
     private static String toString2dArrayLists(ArrayList<ArrayList<String[]> > arrL1) {
