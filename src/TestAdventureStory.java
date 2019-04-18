@@ -216,52 +216,227 @@ public class TestAdventureStory {
                 = new Scanner("#!STORY\n" +
                               "R1: Room 1\nRoom 1 description\n;;;\n: Transition 1 -> 1\n: Transition 2 -> 2\n" +
                               "R2: Room 2 \n Room 2 description \n;;;\n =) \n");
-            ArrayList<String[]> arrRooms = new ArrayList<String[]>();
-            ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
-            String[] curRoom = new String[1];
+            ArrayList<String[]> arrRooms1 = new ArrayList<String[]>();
+            ArrayList<ArrayList<String[]> >  arrTrans1 = new ArrayList<ArrayList<String[]> >();
+            String[] curRoom1 = new String[1];
             boolean passed = true;
-            if(!AdventureStory.parseStory(testSc, arrRooms, arrTrans, curRoom)) {
+            if(!AdventureStory.parseStory(testSc, arrRooms1, arrTrans1, curRoom1)) {
                 System.out.println("parseStory 1: returned false instead of true.");
                 passed = false;
             }
             //Assuming normal Config.java
             //Expected ArrayList of room details:
-            ArrayList<String[]> expRooms =
+            ArrayList<String[]> expRooms1 =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"1",
                                                                       "Room 1",
                                                                       "Room 1 description"},
                                                                      {"2",
                                                                       "Room 2",
                                                                       "Room 2 description"}}));
-            if(!compareArrayListsArrays(arrRooms, expRooms)) {
+            if(!compareArrayListsArrays(arrRooms1, expRooms1)) {
                 System.out.println("parseStory 1: \nrooms ArrayList returned: \n" +
-                                   Arrays.deepToString(arrRooms.toArray()) +
+                                   Arrays.deepToString(arrRooms1.toArray()) +
                                    "\nExpected: \n" +
-                                   Arrays.deepToString(expRooms.toArray()) + "\n");
+                                   Arrays.deepToString(expRooms1.toArray()) + "\n");
                 passed = false;
             }
             //Expected ArrayList of ArrayList of transition details:
-            ArrayList<String[]> room1Trans =
+            ArrayList<String[]> room1Trans1 =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"Transition 1",
                                                                       "1",
                                                                       null},
                                                                      {"Transition 2",
                                                                       "2",
                                                                       null}}));
-            ArrayList<String[]> room2Trans =
+            ArrayList<String[]> room2Trans2 =
                 new ArrayList<String[]>(Arrays.asList(new String[][]{{"=)", null, null}}));
-            ArrayList<ArrayList<String[]> > expTrans = new ArrayList<ArrayList<String[]> >();
-            expTrans.add(room1Trans);
-            expTrans.add(room2Trans);
-            if(!compare2dArrayLists(arrTrans, expTrans)) {
+            ArrayList<ArrayList<String[]> > expTrans2 = new ArrayList<ArrayList<String[]> >();
+            expTrans2.add(room1Trans1);
+            expTrans2.add(room2Trans2);
+            if(!compare2dArrayLists(arrTrans1, expTrans2)) {
                 System.out.println("parseStory 1: \ntransition ArrayList returned: \n" +
-                                   toString2dArrayLists(arrTrans) +
+                                   toString2dArrayLists(arrTrans1) +
                                    "\nExpected: \n" +
-                                   toString2dArrayLists(expTrans) + "\n");
+                                   toString2dArrayLists(expTrans2) + "\n");
                 passed = false;
             }
-            if(passed) System.out.println("parseStory 1: passed"); 
-            
+            if(passed) System.out.println("parseStory 1: passed");
+
+            String[] story1Array = { "#!STORY", "# Eroneous comment", "# And another, good sir!",
+                    "# And yet a third.", "R1: Home", "Home is where the heart is...", ";;;", ": Stay home -> 4",
+                    ": Visit market -> 2", "R2: Deep Sea", "How'd we end up here?", ";;;", ": Swim home -> 4",
+                    ": Visit market -> 3", "R3:    Market under the sea",
+                    "You find no market, but are now lost to wander forever", ";;;", Config.FAIL, "R4:Nothing left",
+                    "You're home, but there's little food remaining. Oh well, you can always go shopping tomorrow.", ";;;",
+                    Config.SUCCESS };
+            String story1 = String.join("\n", story1Array);
+
+            ArrayList<String[]> arrRooms = new ArrayList<String[]>();
+            ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
+            String[] curRoom = new String[1];
+            if(!AdventureStory.parseStory(new Scanner(story1), arrRooms, arrTrans, curRoom)) {
+                System.out.println("parseStoryZyBooks story1: returned false instead of true.");
+                passed = false;
+            }
+
+            // Expected ArrayList of room details:
+            ArrayList<String[]> expRooms = new ArrayList<String[]>(Arrays.asList(new String[][] {
+                    { "1", "Home", "Home is where the heart is..." },
+                    { "2", "Deep Sea", "How'd we end up here?" },
+                    { "3", "Market under the sea", "You find no market, but are now lost to wander forever" },
+                    { "4", "Nothing left",
+                            "You're home, but there's little food remaining. Oh well, you can always go shopping tomorrow." } }));
+
+            // Expected ArrayList of ArrayList of transition details:
+            ArrayList<String[]> room1Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { "Stay home", "4", null },
+                            { "Visit market", "2", null } }));
+            ArrayList<String[]> room2Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { "Swim home", "4", null },
+                            { "Visit market", "3", null  } }));
+            ArrayList<String[]> room3Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { Config.FAIL, null, null } }));
+            ArrayList<String[]> room4Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { Config.SUCCESS, null, null } }));
+
+            ArrayList<ArrayList<String[]>> expTrans = new ArrayList<ArrayList<String[]>>();
+            expTrans.add(room1Trans);
+            expTrans.add(room2Trans);
+            expTrans.add(room3Trans);
+            expTrans.add(room4Trans);
+
+            if(!compareArrayListsArrays(arrRooms, expRooms)) {
+                System.out.println("parseStoryZyBooks story1: \nrooms ArrayList returned: \n" +
+                        Arrays.deepToString(arrRooms.toArray()) +
+                        "\nExpected: \n" +
+                        Arrays.deepToString(expRooms.toArray()) + "\n");
+                passed = false;
+            }
+
+            if(!compare2dArrayLists(arrTrans, expTrans)) {
+                System.out.println("parseStoryZyBooks story1: \ntransition ArrayList returned: \n" +
+                        toString2dArrayLists(arrTrans) +
+                        "\nExpected: \n" +
+                        toString2dArrayLists(expTrans) + "\n");
+                passed = false;
+            }
+            if(passed) System.out.println("parseStoryZyBooks story1: passed");
+        }
+
+        {
+            boolean passed = true;
+
+            String[] story2Array = {
+                    "#!STORY",
+                    "# Eroneous comment",
+                    "# And another, good sir!",
+                    "R1: Welcome to Skyrim",
+                    "You sit atop a carriage, trundling across a small road.",
+                    "# You can look around, but not move",
+                    "You are shackled, and you hear other prisoners talking, discussing their origins.",
+                    "One of the men seems to be Ulfrik Stormcloak, whom you've heard tell of.",
+                    "People say that he shouted the emperor to death.",
+                    "Regardless of present company, you slowly ride into a small town by the name of Helgen",
+                    "Though the guard inspecting you says \"This one's not on the list,\" but there's nothing you can do.",
+                    "Another guard pushes you forward towards the block, whispering, \"I'm sorry, prisoner.\"",
+                    "As you are pushed onto the block, you here faint sounds of a distant cry.",
+                    "Now without hope, you lay on the block and point your head towards the sky as best you can.",
+                    "From out of nowhere, you see a massive dragon slam down atop the nearby guard tower!",
+                    "Its shout deafens you and shakes the entire town with magical power.",
+                    "Under its mighty power, you struggle to stay awake...",
+                    ";;;",
+                    "# MORE COMMENTS",
+                    ": You are the Dragonborn -> 2 ? 1",
+                    ": You are normal -> 5 ? 3",
+                    "R2: Dragonborn",
+                    "You are the mighty Dragonborn, hero of Skyrim.",
+                    "Little can stand in your way as you escape Helgen and embark on a mighty, epic journey!",
+                    "The only thing which prevents you from completing your destiny is an endless series of sidequests.",
+                    ";;;",
+                    Config.SUCCESS,
+                    "# I JUST LOVE COMMENTS",
+                    "R5: Goodnight", // Yeah, we skipped 3 & 4!
+                    "Your mortal might cannot hold against the power of the Dragon and you fall unconscious,",
+                    "never to awaken...",
+                    ";;;",
+
+                    Config.FAIL
+            };
+            String story2 = String.join("\n", story2Array);
+
+            ArrayList<String[]> arrRooms = new ArrayList<String[]>();
+            ArrayList<ArrayList<String[]> >  arrTrans = new ArrayList<ArrayList<String[]> >();
+            String[] curRoom = new String[1];
+            if(!AdventureStory.parseStory(new Scanner(story2), arrRooms, arrTrans, curRoom)) {
+                System.out.println("parseStoryZyBooks story2: returned false instead of true.");
+                passed = false;
+            }
+
+            final String SKYRIM
+                    = String.join("\n", new String[]{"You sit atop a carriage, trundling across a small road.",
+                    "# You can look around, but not move",
+                    "You are shackled, and you hear other prisoners talking, discussing their origins.",
+                    "One of the men seems to be Ulfrik Stormcloak, whom you've heard tell of.",
+                    "People say that he shouted the emperor to death.",
+                    "Regardless of present company, you slowly ride into a small town by the name of Helgen",
+                    "Though the guard inspecting you says \"This one's not on the list,\" but there's nothing you can do.",
+                    "Another guard pushes you forward towards the block, whispering, \"I'm sorry, prisoner.\"",
+                    "As you are pushed onto the block, you here faint sounds of a distant cry.",
+                    "Now without hope, you lay on the block and point your head towards the sky as best you can.",
+                    "From out of nowhere, you see a massive dragon slam down atop the nearby guard tower!",
+                    "Its shout deafens you and shakes the entire town with magical power.",
+                    "Under its mighty power, you struggle to stay awake..."});
+
+            final String DRAGONBORN
+                    = String.join("\n", new String[] {"You are the mighty Dragonborn, hero of Skyrim.",
+                    "Little can stand in your way as you escape Helgen and embark on a mighty, epic journey!",
+                    "The only thing which prevents you from completing your destiny is an endless series of sidequests."});
+
+            // Expected ArrayList of room details:
+            ArrayList<String[]> expRooms = new ArrayList<String[]>(Arrays.asList(new String[][] {
+                    { "1", "Welcome to Skyrim", SKYRIM },
+                    { "2", "Dragonborn", DRAGONBORN },
+                    { "5", "Goodnight",
+                            "Your mortal might cannot hold against the power of the Dragon and you fall unconscious,\n"
+                                    + "never to awaken..." } }));
+
+            // Expected ArrayList of ArrayList of transition details:
+            ArrayList<String[]> room1Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { "You are the Dragonborn", "2", "1" }, { "You are normal", "5", "3" } }));
+            ArrayList<String[]> room2Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { Config.SUCCESS, null, null } }));
+            ArrayList<String[]> room5Trans
+                    = new ArrayList<String[]>(
+                    Arrays.asList(new String[][] { { Config.FAIL, null, null } }));
+
+            ArrayList<ArrayList<String[]>> expTrans = new ArrayList<ArrayList<String[]>>();
+            expTrans.add(room1Trans);
+            expTrans.add(room2Trans);
+            expTrans.add(room5Trans);
+
+            if(!compareArrayListsArrays(arrRooms, expRooms)) {
+                System.out.println("parseStoryZyBooks story2: \nrooms ArrayList returned: \n" +
+                        Arrays.deepToString(arrRooms.toArray()) +
+                        "\nExpected: \n" +
+                        Arrays.deepToString(expRooms.toArray()) + "\n");
+                passed = false;
+            }
+
+            if(!compare2dArrayLists(arrTrans, expTrans)) {
+                System.out.println("parseStoryZyBooks story2: \ntransition ArrayList returned: \n" +
+                        toString2dArrayLists(arrTrans) +
+                        "\nExpected: \n" +
+                        toString2dArrayLists(expTrans) + "\n");
+                passed = false;
+            }
+            if(passed) System.out.println("parseStoryZyBooks story2: passed");
+
         } //TODO: add two tests (could do with double digit rooms and multiple transitions in different rooms
         
     }

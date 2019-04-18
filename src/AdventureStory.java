@@ -346,12 +346,10 @@ public class AdventureStory {
                     if (!(line.equals(";;;"))) {
                         temp[Config.ROOM_DESC] += line;
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].replaceAll("null", "");
-                        if (line.equals("")) {
-                            temp[Config.ROOM_DESC] += "\n";
-                        }
-                        continue;
+                        temp[Config.ROOM_DESC] += "\n";
                     }
                     else {
+                        temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].trim();
                         break;
                     }
                 }
@@ -581,6 +579,9 @@ public class AdventureStory {
      */
     public static ArrayList<String[]> displayTransitions(String id, ArrayList<String[]> rooms,
                                                          ArrayList<ArrayList<String[]> > trans) {
+        if (rooms == null || trans == null || id == null) {
+            return null;
+        }
         int index = getRoomIndex(id, rooms);
         if (index == -1) {
             return null;
