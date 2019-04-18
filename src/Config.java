@@ -45,7 +45,7 @@ public class Config {
     /**
      * Character used when printing a line
      */
-    public static char LINE_CHAR = '-';
+    public static char LINE_CHAR = '#';
 
     /**
      * Random seed to use
