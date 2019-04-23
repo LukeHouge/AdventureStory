@@ -243,10 +243,14 @@ public class AdventureStory {
                                         ArrayList<ArrayList<String[]> > trans,
                                         String[] curRoom) {
         String fName = null;
+        Boolean flag = false;
         try {
             fName = sc.nextLine().trim();
             curRoom[0] = sc.nextLine().trim();
-            parseFile(fName, rooms, trans, curRoom);
+            flag = parseFile(fName, rooms, trans, curRoom);
+            if (!flag) {
+                return false;
+            }
         }
         catch(RuntimeException ex){
             System.out.println("Unable to read first line from file: " + fName);
