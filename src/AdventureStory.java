@@ -373,12 +373,24 @@ public class AdventureStory {
                 temp[Config.ROOM_TITLE] = line.substring(line.lastIndexOf(':') + 1).trim();
                 while (sc.hasNextLine()) {
                     line = sc.nextLine().trim();
-                    if (!(line.equals(";;;"))) {
+                    if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
+                        String[] tempTran = new String[Config.TRAN_DET_LEN];
+                        tempTran[0] = line;
+                        ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
+                        trans.get(count).add(tempTran);
+                        if (sc.hasNextLine()) {
+                            line = sc.nextLine().trim();
+                            trans.add(tempArrList);
+                        }
+                        tranCount ++;
+                        count ++;
+                    }
+                    else if (!(line.equals(";;;"))) {
                         temp[Config.ROOM_DESC] += line;
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].replaceAll("null", "");
                         temp[Config.ROOM_DESC] += "\n";
                     }
-                    else {
+                    else if (temp[Config.ROOM_DESC] != null){
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].trim();
                         break;
                     }
@@ -676,7 +688,8 @@ public class AdventureStory {
                     return null;
                 }
                 else {
-                    random = rand.nextInt(total-1);
+                    random = rand.nextInt(total);
+                    total = 0;
                     for (int i=0; i<curTrans.size(); i++) {
                         total += Integer.parseInt(curTrans.get(i)[Config.TRAN_PROB]);
                         if (total > random) {
@@ -814,7 +827,7 @@ public class AdventureStory {
                     if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
                             !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
                             && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
-                        probTransReturn = probTrans(rand, arrTrans.get(count));
+                        probTransReturn = probTrans(rand, arrTrans.get(0));
                         if (probTransReturn == null) {
                             choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
                             if (choose == -1) {
