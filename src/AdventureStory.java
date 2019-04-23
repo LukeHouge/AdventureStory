@@ -391,8 +391,8 @@ public class AdventureStory {
                     tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
                             line.indexOf("->")).trim();
                     if (line.contains("?")) {
-                        tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1, line.indexOf("?")).trim();
-                        tempTran[Config.TRAN_PROB] = line.substring(line.indexOf("?") + 1).trim();
+                        tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1, line.lastIndexOf("?")).trim();
+                        tempTran[Config.TRAN_PROB] = line.substring(line.lastIndexOf("?") + 1).trim();
                     }
                     else {
                         tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
