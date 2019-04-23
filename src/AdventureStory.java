@@ -822,6 +822,10 @@ public class AdventureStory {
             fileName = promptString(sc, "Please enter the story filename: ");
             if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
                 do {
+                    if ((arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
+                                    || (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
+                        break;
+                    }
                     displayRoom(curRoom[0], arrRooms);
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
                     if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
@@ -862,15 +866,15 @@ public class AdventureStory {
                     else {
                         curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0];
                     }
-                    if (curRoom[0].equals(Config.FAIL)) {
-                        System.out.println("You failed to complete the adventure. Better luck next time!");
-                    }
-                    else if (curRoom[0].equals(Config.SUCCESS)){
-                        System.out.println("Congratulations! You successfully completed the adventure!");
-                    }
                     count ++;
                     transCount ++;
                 } while (!(curRoom[0].equals(Config.FAIL)) && !(curRoom[0].equals(Config.SUCCESS)));
+            }
+            if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL)) {
+                System.out.println("You failed to complete the adventure. Better luck next time!");
+            }
+            else if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS)){
+                System.out.println("Congratulations! You successfully completed the adventure!");
             }
             returnedChar = promptChar(new Scanner(System.in), "Do you want to try again? ");
         } while (!(returnedChar == 'n'));
