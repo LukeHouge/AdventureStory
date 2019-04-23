@@ -786,6 +786,8 @@ public class AdventureStory {
         char returnedChar = 'y';
         String returnedString = null;
         Boolean returnedBoolean = false;
+        String probTransReturn = null;
+        Random rand = new Random();
         int count = 0;
         int transCount = 1;
         int choose = 0;
@@ -808,30 +810,36 @@ public class AdventureStory {
                     if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
                             !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
                             && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
-                        choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
-                        if (choose == -1) {
-                            returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
-                            if (returnedChar == 'y') {
-                                curRoom[0] = Config.FAIL;
+                        probTransReturn = probTrans(rand, arrTrans.get(count));
+                        if (probTransReturn == null) {
+                            choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
+                            if (choose == -1) {
+                                returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
+                                if (returnedChar == 'y') {
+                                    curRoom[0] = Config.FAIL;
+                                }
                             }
-                        }
-                        else if (choose == -2) {
-                            String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
-                            String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
-                            returnedString = promptString(sc, prompt);
-                            if (returnedChar == 'y') {
-                                curRoom[0] = Config.FAIL;
-                            }
-                            returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
-                            if (returnedBoolean == true) {
-                                System.out.println("Bookmark saved in " + returnedString);
+                            else if (choose == -2) {
+                                String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
+                                String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
+                                returnedString = promptString(sc, prompt);
+                                if (returnedChar == 'y') {
+                                    curRoom[0] = Config.FAIL;
+                                }
+                                returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
+                                if (returnedBoolean == true) {
+                                    System.out.println("Bookmark saved in " + returnedString);
+                                }
+                                else {
+                                    System.out.println("Error saving bookmark in " + returnedString);
+                                }
                             }
                             else {
-                                System.out.println("Error saving bookmark in " + returnedString);
+                                curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose)[Config.TRAN_ROOM_ID];
                             }
                         }
                         else {
-                            curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose)[Config.TRAN_ROOM_ID];
+                            curRoom[0] = probTransReturn;
                         }
                     }
                     else {
