@@ -127,6 +127,22 @@ public class AdventureStory {
      * @return false on an IOException, and true otherwise.
      */
     public static boolean saveBookmark(String storyFile, String curRoom, String bookmarkFile) {
+        File file = new File(bookmarkFile);
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(file);
+            writer.println(Config.MAGIC_BOOKMARK);
+            writer.println(storyFile);
+            writer.println(curRoom);
+        }
+        catch (FileNotFoundException e) {
+            return false;
+        }
+        finally {
+            if ( writer != null ) {
+                writer.close();
+            }
+        }
         return true;
     }
 
@@ -642,6 +658,33 @@ public class AdventureStory {
      *         Otherwise, return null. Also, return null if there is a NumberFormatException.
      */
     public static String probTrans(Random rand, ArrayList<String[]> curTrans) {
+        int total = 0;
+        int random = 0;
+        if (curTrans == null) {
+            return null;
+        }
+        else {
+            try {
+                for (int i=0; i<curTrans.size(); i++) {
+                    total += Integer.parseInt(curTrans.get(i)[Config.TRAN_PROB]);
+                }
+                if (total == 0 ) {
+                    return null;
+                }
+                else {
+                    random = rand.nextInt(total-1);
+                    for (int i=0; i<curTrans.size(); i++) {
+                        total += Integer.parseInt(curTrans.get(i)[Config.TRAN_PROB]);
+                        if (total > random) {
+                            return curTrans.get(i)[Config.TRAN_ROOM_ID];
+                        }
+                    }
+                }
+            }
+            catch(NumberFormatException ex){
+                return null;
+            }
+        }
         return null;
     }
 
@@ -696,10 +739,53 @@ public class AdventureStory {
      *   - Repeat until the character returned by promptChar is an 'n'
      *   - Print out "Thank you for playing!", terminated by a newline.
      *
+     * Milestone #3:
+     *   - Print out the welcome message: "Welcome to this choose your own adventure system!"
+     *   - Begin the play again loop:
+     *       - Prompt for a filename using the promptString method with the prompt:
+     *         "Please enter the story filename: "
+     *       - If the file is successfully parsed using the parseFile method:
+     *            - Begin the game loop with the current room ID being that in the 0 index of the
+     *              String array passed into the parseFile method as the 4th parameter
+     *                 - Output the room details via the displayRoom method
+     *                 - Output the transitions via the displayTransitions method
+     *                 - If the current transition is not terminal:
+     *                   - If the value returnd by the probTrans method is null:
+     *                     - Prompt the user for a number between -2 and the number of transitions
+     *                       minus 1, using the promptInt method with a prompt of "Choose: "
+     *                     - If the returned value is -1:
+     *                        - read a char using promptChar with a prompt of
+     *                          "Are you sure you want to quit the adventure? "
+     *                        - Set the current room ID to Config.FAIL if that character returned is
+     *                          'y'
+     *                     - If the returned value is -2:
+     *                        - read a String using the promptString method with a prompt of:
+     *                          "Bookmarking current location: curRoom. Enter bookmark filename: ",
+     *                          where curRoom is the current room ID.
+     *                        - Call the saveBookmark method and output (terminated by a new line):
+     *                           - if successful: "Bookmark saved in fSave"
+     *                           - if unsuccessful: "Error saving bookmark in fSave"
+     *                       where fSave is the String returned by promptString.
+     *                     - Otherwise: Set the current room ID to the room id at index
+     *                                  Config.TRAN_ROOM_ID of the selected transition.
+     *                   - Otherwise, the value returned by probTrans is not null: make this value
+     *                     the current room ID.
+     *            - Continue the game loop until the current room ID is Config.SUCCESS or
+     *              Config.FAIL.
+     *            - If the current room ID is Config.FAIL, print out the message (terminated by a
+     *              line): "You failed to complete the adventure. Better luck next time!"
+     *            - Otherwise: print out the message (terminated by a line):
+     *              "Congratulations! You successfully completed the adventure!"
+     *       - Prompt for a char using the promptChar method with the prompt:
+     *         "Do you want to try again? "
+     *   - Repeat until the character returned by promptChar is an 'n'
+     *   - Print out "Thank you for playing!", terminated by a newline.
      * @param args Unused
      */
     public static void main(String[] args) {
         char returnedChar = 'y';
+        String returnedString = null;
+        Boolean returnedBoolean = false;
         int count = 0;
         int transCount = 1;
         int choose = 0;
@@ -722,11 +808,26 @@ public class AdventureStory {
                     if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
                             !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
                             && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
-                        choose = promptInt(new Scanner(System.in), "Choose: ", -1, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
+                        choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
                         if (choose == -1) {
                             returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
                             if (returnedChar == 'y') {
                                 curRoom[0] = Config.FAIL;
+                            }
+                        }
+                        else if (choose == -2) {
+                            String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
+                            String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
+                            returnedString = promptString(sc, prompt);
+                            if (returnedChar == 'y') {
+                                curRoom[0] = Config.FAIL;
+                            }
+                            returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
+                            if (returnedBoolean == true) {
+                                System.out.println("Bookmark saved in " + returnedString);
+                            }
+                            else {
+                                System.out.println("Error saving bookmark in " + returnedString);
                             }
                         }
                         else {
