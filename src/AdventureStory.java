@@ -226,6 +226,16 @@ public class AdventureStory {
     public static boolean parseBookmark(Scanner sc, ArrayList<String[]> rooms,
                                         ArrayList<ArrayList<String[]> > trans,
                                         String[] curRoom) {
+        String fName = null;
+        try {
+            fName = sc.nextLine().trim();
+            curRoom[0] = sc.nextLine().trim();
+            parseFile(fName, rooms, trans, curRoom);
+        }
+        catch(RuntimeException ex){
+            System.out.println("Unable to read first line from file: " + fName);
+            return false;
+        }
         return true;
     }
 
