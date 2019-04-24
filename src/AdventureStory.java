@@ -21,12 +21,9 @@
 //
 /////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 import java.io.*;
 import java.lang.*;
-import java.util.Arrays;
 
 public class AdventureStory {
 
@@ -196,6 +193,7 @@ public class AdventureStory {
             File file = new File(fName);
             sc = new Scanner(file);
             sc.useDelimiter("\\Z");
+            line = sc.nextLine().trim();
         }
         catch(IOException ex){
             System.out.println("Error reading file: " + fName);
@@ -205,7 +203,6 @@ public class AdventureStory {
             System.out.println("Unable to read first line from file: " + fName);
             return false;
         }
-        line = sc.nextLine().trim();
         if (line.equals(Config.MAGIC_STORY)) {
             parseStory(sc, rooms, trans, curRoom);
         }
