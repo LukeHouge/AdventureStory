@@ -191,6 +191,7 @@ public class AdventureStory {
                                     ArrayList<ArrayList<String[]> > trans,
                                     String[] curRoom) {
         Scanner sc;
+        String line = null;
         try {
             File file = new File(fName);
             sc = new Scanner(file);
@@ -204,7 +205,17 @@ public class AdventureStory {
             System.out.println("Unable to read first line from file: " + fName);
             return false;
         }
-        parseStory(sc, rooms, trans, curRoom);
+        line = sc.nextLine().trim();
+        if (line.equals(Config.MAGIC_STORY)) {
+            parseStory(sc, rooms, trans, curRoom);
+        }
+        else if (line.equals(Config.MAGIC_BOOKMARK)) {
+            parseBookmark(sc, rooms, trans, curRoom);
+        }
+        else {
+            System.out.println("First line: " + line + " does not correspond to known value.");
+            return false;
+        }
         return true;
     }
 
@@ -244,10 +255,12 @@ public class AdventureStory {
                                         String[] curRoom) {
         String fName = null;
         Boolean flag = false;
+        String room = null;
         try {
             fName = sc.nextLine().trim();
-            curRoom[0] = sc.nextLine().trim();
+            room = sc.nextLine().trim();
             flag = parseFile(fName, rooms, trans, curRoom);
+            curRoom[0] = room;
             if (!flag) {
                 return false;
             }
@@ -837,7 +850,7 @@ public class AdventureStory {
                             if (choose == -1) {
                                 returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
                                 if (returnedChar == 'y') {
-                                    curRoom[0] = Config.FAIL;
+                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
                                 }
                             }
                             else if (choose == -2) {
@@ -845,7 +858,7 @@ public class AdventureStory {
                                 String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
                                 returnedString = promptString(sc, prompt);
                                 if (returnedChar == 'y') {
-                                    curRoom[0] = Config.FAIL;
+                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
                                 }
                                 returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
                                 if (returnedBoolean == true) {
