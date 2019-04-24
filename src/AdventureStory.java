@@ -385,7 +385,7 @@ public class AdventureStory {
                     line = sc.nextLine().trim();
                     if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
                         String[] tempTran = new String[Config.TRAN_DET_LEN];
-                        tempTran[0] = line;
+                        tempTran[Config.TRAN_DESC] = line;
                         ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                         trans.get(count).add(tempTran);
                         if (sc.hasNextLine()) {
@@ -431,7 +431,7 @@ public class AdventureStory {
             }
             else if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
                 String[] tempTran = new String[Config.TRAN_DET_LEN];
-                tempTran[0] = line;
+                tempTran[Config.TRAN_DESC] = line;
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                 trans.get(count).add(tempTran);
                 if (sc.hasNextLine()) {
@@ -814,7 +814,7 @@ public class AdventureStory {
         String returnedString = null;
         Boolean returnedBoolean = false;
         String probTransReturn = null;
-        Random rand = new Random();
+        Random rand = new Random(Config.SEED);
         int count = 0;
         int transCount = 1;
         int choose = 0;
