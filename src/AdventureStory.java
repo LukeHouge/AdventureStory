@@ -45,8 +45,9 @@ public class AdventureStory {
      */
     public static int promptInt(Scanner sc, String prompt, int min, int max) {
         int inputInt = 0;
+        boolean status = true;
         // keeps prompting for an int until valid is entered
-        while (true) {
+        while (status) {
             // print out supplied prompt
             System.out.print(prompt);
             // checking if there is an int, and setting inputInt to that if so
@@ -54,24 +55,20 @@ public class AdventureStory {
                 inputInt = sc.nextInt();
                 // checking range with min and max
                 if (inputInt >= min && inputInt <= max) {
-                    return inputInt;
+                    status = false;
                     // if not valid, return -1
                 }
-                // alerting to expected value if no nextInt
                 else {
                     System.out.println("Invalid value.");
-                    if (sc.hasNext()) {
-                        sc.next();
-                    }
+                    sc.nextLine();
                 }
             }
             else {
                 System.out.println("Invalid value.");
-                if (sc.hasNext()) {
-                    sc.next();
-                }
+                sc.nextLine();
             }
         }
+        return inputInt;
     }
 
     /**
