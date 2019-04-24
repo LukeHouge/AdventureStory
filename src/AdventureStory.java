@@ -52,18 +52,24 @@ public class AdventureStory {
             // checking if there is an int, and setting inputInt to that if so
             if (sc.hasNextInt()) {
                 inputInt = sc.nextInt();
+                // checking range with min and max
+                if (inputInt >= min && inputInt <= max) {
+                    return inputInt;
+                    // if not valid, return -1
+                }
+                // alerting to expected value if no nextInt
+                else {
+                    System.out.println("Invalid value.");
+                    if (sc.hasNext()) {
+                        sc.next();
+                    }
+                }
             }
-            // alerting to expected value if no nextInt
             else {
                 System.out.println("Invalid value.");
-            }
-            // checking range with min and max
-            if (inputInt >= min && inputInt <= max) {
-                return inputInt;
-                // if not valid, return -1
-            }
-            else {
-                System.out.println("Invalid value.");
+                if (sc.hasNext()) {
+                    sc.next();
+                }
             }
         }
     }
