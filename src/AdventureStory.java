@@ -651,8 +651,8 @@ public class AdventureStory {
         if (index == -1) {
             return null;
         }
-        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[0].equals(Config.FAIL))
-                || (trans.get(index).get(0)[0].equals(Config.SUCCESS)))) {
+        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
+                || (trans.get(index).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)))) {
             return trans.get(index);
         }
         else {
