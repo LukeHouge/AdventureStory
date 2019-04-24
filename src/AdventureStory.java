@@ -422,7 +422,12 @@ public class AdventureStory {
                     ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                     trans.add(tempArrList);
                     trans.get(count).add(tempTran);
-                    line = sc.nextLine().trim();
+                    if (sc.hasNextLine()) {
+                        line = sc.nextLine().trim();
+                    }
+                    else {
+                        break;
+                    }
                     if (line.equals("")) {
                         break;
                     }
@@ -832,22 +837,28 @@ public class AdventureStory {
             fileName = promptString(sc, "Please enter the story filename: ");
             if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
                 do {
-                    if ((arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
-                                    || (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
+                    try {
+                        if ((arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
+                                || (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS))) {
+                            break;
+                        }
+                    }
+                    catch (NullPointerException ex) {
                         break;
                     }
+
                     displayRoom(curRoom[0], arrRooms);
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
                     if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
-                            !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
-                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
+                            !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
+                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS))) {
                         probTransReturn = probTrans(rand, arrTrans.get(0));
                         if (probTransReturn == null) {
                             choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
                             if (choose == -1) {
                                 returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
                                 if (returnedChar == 'y') {
-                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
+                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC] = Config.FAIL;
                                 }
                             }
                             else if (choose == -2) {
@@ -855,7 +866,7 @@ public class AdventureStory {
                                 String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
                                 returnedString = promptString(sc, prompt);
                                 if (returnedChar == 'y') {
-                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
+                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC] = Config.FAIL;
                                 }
                                 returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
                                 if (returnedBoolean == true) {
@@ -874,16 +885,16 @@ public class AdventureStory {
                         }
                     }
                     else {
-                        curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0];
+                        curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC];
                     }
                     count ++;
                     transCount ++;
                 } while (!(curRoom[0].equals(Config.FAIL)) && !(curRoom[0].equals(Config.SUCCESS)));
             }
-            if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL)) {
+            if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL)) {
                 System.out.println("You failed to complete the adventure. Better luck next time!");
             }
-            else if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS)){
+            else if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)){
                 System.out.println("Congratulations! You successfully completed the adventure!");
             }
             returnedChar = promptChar(new Scanner(System.in), "Do you want to try again? ");

@@ -12,7 +12,7 @@ public class Config {
     /**
      * Display maximum line length
      */
-    public static int DISPLAY_WIDTH = 80; 
+    public static int DISPLAY_WIDTH = 80;
 
     /**
      * Room details String[] constants
