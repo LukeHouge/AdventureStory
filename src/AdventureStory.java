@@ -21,6 +21,8 @@
 //
 /////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
 
+import javafx.application.ConditionalFeature;
+
 import java.util.*;
 import java.io.*;
 import java.lang.*;
@@ -819,19 +821,24 @@ public class AdventureStory {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        Random rand = new Random(Config.SEED);
         ArrayList<String[]> arrRooms = new ArrayList<String[]>();
         ArrayList<ArrayList<String[]>> arrTrans = new ArrayList<ArrayList<String[]>>();
-        char returnedChar;
+        char returnedChar = ' ';
+        int choose;
         boolean flag = true;
         boolean flag2 = false;
         boolean win = false;
         boolean loose = false;
+        boolean returnedBoolean;
         String[] curRoom = new String[Config.ROOM_DET_LEN];
         String textWelcome = "Welcome to this choose your own adventure system!";
         String textPromptFile = "Please enter the story filename: ";
         String textWin = "Congratulations! You successfully completed the adventure!";
         String textLoose = "You failed to complete the adventure. Better luck next time!";
         String textQuit = "Are you sure you want to quit the adventure? ";
+        String probTransReturn = null;
+        String returnedString = null;
         String fName;
 
         System.out.println(textWelcome);
@@ -841,6 +848,10 @@ public class AdventureStory {
                 flag2 = true;
             }
             while (flag2) {
+                if ((arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.FAIL))
+                        || (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0].equals(Config.SUCCESS))) {
+                    break;
+                }
                 ArrayList<String[]> currTrans = new ArrayList<String[]>();
                 int currIndex = getRoomIndex(curRoom[0], arrRooms);
                 win = false;
@@ -860,17 +871,37 @@ public class AdventureStory {
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
                 }
                 if (!win && !loose) {
-                    int transChosen = promptInt(sc, "Choose: ", -1,
-                            arrTrans.get(currIndex).size() - 1);
-                    if (transChosen == -1) {
-                        char quitChar = promptChar(sc, textQuit);
-                        if (quitChar == 'y') {
-                            curRoom[0] = Config.FAIL;
-                            loose = true;
+                    probTransReturn = probTrans(rand, arrTrans.get(0));
+                    if (probTransReturn == null) {
+                        choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
+                        if (choose == -1) {
+                            returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
+                            if (returnedChar == 'y') {
+                                arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
+                                break;
+                            }
+                        }
+                        else if (choose == -2) {
+                            String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
+                            String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
+                            returnedString = promptString(sc, prompt);
+                            if (returnedChar == 'y') {
+                                arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] = Config.FAIL;
+                            }
+                            returnedBoolean = saveBookmark(fName, curRoom[0], returnedString);
+                            if (returnedBoolean == true) {
+                                System.out.println("Bookmark saved in " + returnedString);
+                            }
+                            else {
+                                System.out.println("Error saving bookmark in " + returnedString);
+                            }
+                        }
+                        else {
+                            curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose)[Config.TRAN_ROOM_ID];
                         }
                     }
                     else {
-                        curRoom[0] = arrTrans.get(currIndex).get(transChosen)[Config.TRAN_ROOM_ID];
+                        curRoom[0] = probTransReturn;
                     }
                 }
                 else if (loose) {
