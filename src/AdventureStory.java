@@ -53,6 +53,7 @@ public class AdventureStory {
             // checking if there is an int, and setting inputInt to that if so
             if (sc.hasNextInt()) {
                 inputInt = sc.nextInt();
+                sc.nextLine();
                 // checking range with min and max
                 if (inputInt >= min && inputInt <= max) {
                     status = false;
@@ -60,12 +61,16 @@ public class AdventureStory {
                 }
                 else {
                     System.out.println("Invalid value.");
-                    sc.nextLine();
                 }
             }
             else {
                 System.out.println("Invalid value.");
-                sc.nextLine();
+                if (sc.hasNextLine()) {
+                    String temp = sc.nextLine();
+                    if (temp.equals("")) {
+                        continue;
+                    }
+                }
             }
         }
         return inputInt;
@@ -73,14 +78,14 @@ public class AdventureStory {
 
     /**
      * Prompts the user for a char value by displaying prompt.
-     * Note: This method should not add a new line to the output of prompt. 
+     * Note: This method should not add a new line to the output of prompt.
      *
      * After prompting the user, the method will read an entire line of input and return the first
      * non-whitespace character converted to lower case.
      *
      * @param sc The Scanner instance to read from System.in
      * @param prompt The user prompt.
-     * @return Returns the first non-whitespace character (in lower case) read from the user. If 
+     * @return Returns the first non-whitespace character (in lower case) read from the user. If
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
@@ -96,9 +101,9 @@ public class AdventureStory {
 
     /**
      * Prompts the user for a string value by displaying prompt.
-     * Note: This method should not add a new line to the output of prompt. 
+     * Note: This method should not add a new line to the output of prompt.
      *
-     * After prompting the user, the method will read an entire line of input, removing any leading and 
+     * After prompting the user, the method will read an entire line of input, removing any leading and
      * trailing whitespace.
      *
      * @param sc The Scanner instance to read from System.in
@@ -818,90 +823,76 @@ public class AdventureStory {
      * @param args Unused
      */
     public static void main(String[] args) {
-        char returnedChar = 'y';
-        String returnedString = null;
-        Boolean returnedBoolean = false;
-        String probTransReturn = null;
-        Random rand = new Random(Config.SEED);
-        int count = 0;
-        int transCount = 1;
-        int choose = 0;
+        Scanner sc = new Scanner(System.in);
         ArrayList<String[]> arrRooms = new ArrayList<String[]>();
         ArrayList<ArrayList<String[]>> arrTrans = new ArrayList<ArrayList<String[]>>();
-        for (int i = 0; i < 100; ++i) {
-            ArrayList<String[]> row = new ArrayList<String[]>();
-            arrTrans.add(row);
-        }
-        String[] curRoom = new String[1];
-        String fileName;
-        System.out.println("Welcome to this choose your own adventure system!");
-        do {
-            Scanner sc = new Scanner(System.in);
-            fileName = promptString(sc, "Please enter the story filename: ");
-            if (parseFile(fileName, arrRooms, arrTrans, curRoom)) {
-                do {
-                    try {
-                        if ((arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
-                                || (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS))) {
-                            break;
-                        }
-                    }
-                    catch (NullPointerException ex) {
-                        break;
-                    }
+        char returnedChar;
+        boolean flag = true;
+        boolean flag2 = false;
+        boolean win = false;
+        boolean loose = false;
+        String[] curRoom = new String[Config.ROOM_DET_LEN];
+        String textWelcome = "Welcome to this choose your own adventure system!";
+        String textPromptFile = "Please enter the story filename: ";
+        String textWin = "Congratulations! You successfully completed the adventure!";
+        String textLoose = "You failed to complete the adventure. Better luck next time!";
+        String textQuit = "Are you sure you want to quit the adventure? ";
+        String fName;
 
-                    displayRoom(curRoom[0], arrRooms);
+        System.out.println(textWelcome);
+        while (flag) {
+            fName = promptString(sc, textPromptFile);
+            if (parseFile(fName, arrRooms, arrTrans, curRoom)) {
+                flag2 = true;
+            }
+            while (flag2) {
+                ArrayList<String[]> currTrans = new ArrayList<String[]>();
+                int currIndex = getRoomIndex(curRoom[0], arrRooms);
+                win = false;
+                loose = false;
+                if (currIndex != -1) {
+                    currTrans = arrTrans.get(currIndex);
+                    win = currTrans.get(0)[Config.TRAN_DESC].equals(Config.SUCCESS);
+                    loose = currTrans.get(0)[Config.TRAN_DESC].equals(Config.FAIL);
+                }
+                else {
+                    loose = true;
+                }
+                displayRoom(curRoom[0], arrRooms);
+                if (currTrans.size() > 0
+                        && !currTrans.get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)
+                        && !currTrans.get(0)[Config.TRAN_DESC].equals(Config.FAIL)) {
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
-                    if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[0] == null ||
-                            !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
-                            && !(arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS))) {
-                        probTransReturn = probTrans(rand, arrTrans.get(0));
-                        if (probTransReturn == null) {
-                            choose = promptInt(new Scanner(System.in), "Choose: ", -2, arrTrans.get(Integer.parseInt(curRoom[0])-1).size()-1); //TODO: doesnt work if char entered instead of num
-                            if (choose == -1) {
-                                returnedChar = promptChar(sc, "Are you sure you want to quit the adventure? ");
-                                if (returnedChar == 'y') {
-                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC] = Config.FAIL;
-                                }
-                            }
-                            else if (choose == -2) {
-                                String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
-                                String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
-                                returnedString = promptString(sc, prompt);
-                                if (returnedChar == 'y') {
-                                    arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC] = Config.FAIL;
-                                }
-                                returnedBoolean = saveBookmark(fileName, curRoom[0], returnedString);
-                                if (returnedBoolean == true) {
-                                    System.out.println("Bookmark saved in " + returnedString);
-                                }
-                                else {
-                                    System.out.println("Error saving bookmark in " + returnedString);
-                                }
-                            }
-                            else {
-                                curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(choose)[Config.TRAN_ROOM_ID];
-                            }
-                        }
-                        else {
-                            curRoom[0] = probTransReturn;
+                }
+                if (!win && !loose) {
+                    int transChosen = promptInt(sc, "Choose: ", -1,
+                            arrTrans.get(currIndex).size() - 1);
+                    if (transChosen == -1) {
+                        char quitChar = promptChar(sc, textQuit);
+                        if (quitChar == 'y') {
+                            curRoom[0] = Config.FAIL;
+                            loose = true;
                         }
                     }
                     else {
-                        curRoom[0] = arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC];
+                        curRoom[0] = arrTrans.get(currIndex).get(transChosen)[Config.TRAN_ROOM_ID];
                     }
-                    count ++;
-                    transCount ++;
-                } while (!(curRoom[0].equals(Config.FAIL)) && !(curRoom[0].equals(Config.SUCCESS)));
+                }
+                else if (loose) {
+                    System.out.println(textLoose);
+                    flag2 = false;
+                }
+                else {
+                    System.out.println(textWin);
+                    flag2 = false;
+                }
             }
-            if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.FAIL)) {
-                System.out.println("You failed to complete the adventure. Better luck next time!");
+            returnedChar = promptChar(sc, "Do you want to try again? ");
+            if (returnedChar == 'n') {
+                System.out.println("Thank you for playing!");
+                return;
             }
-            else if (arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)){
-                System.out.println("Congratulations! You successfully completed the adventure!");
-            }
-            returnedChar = promptChar(new Scanner(System.in), "Do you want to try again? ");
-        } while (!(returnedChar == 'n'));
-        System.out.println("Thank you for playing!");
+            continue;
+        }
     }
 }
