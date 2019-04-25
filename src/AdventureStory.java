@@ -89,13 +89,18 @@ public class AdventureStory {
      *         there are no non-whitespace characters read, the null character is returned.
      */
     public static char promptChar(Scanner sc, String prompt) {
+        // printing out the prompt passed in
         System.out.print(prompt);
+        // setting input to the entered line
         String input = sc.nextLine();
+        // loops through the input and finds the first character that is not whitespace, and
+        // returns it in lowercase
         for (int i=0; i<input.length(); i++){
             if (Character.isLetterOrDigit(input.charAt(i))) {
                 return Character.toLowerCase(input.charAt(i));
             }
         }
+        // if not found, return the null character
         return '\u0000';
     }
 
@@ -111,8 +116,11 @@ public class AdventureStory {
      * @return Returns the string entered by the user with leading and trailing whitespace removed.
      */
     public static String promptString(Scanner sc, String prompt) {
+        // print prompt
         System.out.print(prompt);
+        // get input
         String input = sc.nextLine();
+        // return input trimmed
         return input.trim();
     }
 
@@ -132,19 +140,27 @@ public class AdventureStory {
      * @return false on an IOException, and true otherwise.
      */
     public static boolean saveBookmark(String storyFile, String curRoom, String bookmarkFile) {
+        // making a new file instance
         File file = new File(bookmarkFile);
+        // making new printwriter instance
         PrintWriter writer = null;
         try {
+            // setting the writer with the file
             writer = new PrintWriter(file);
+            // setting the first line to the Config.Magic_Bookmark value
             writer.println(Config.MAGIC_BOOKMARK);
+            // setting second line to the story file name
             writer.println(storyFile);
+            // setting third line to the current room id
             writer.println(curRoom);
         }
+        // catching a file not found exception
         catch (FileNotFoundException e) {
             return false;
         }
         finally {
             if ( writer != null ) {
+                // if the writer did something, close it and write to the file
                 writer.close();
             }
         }
@@ -198,25 +214,34 @@ public class AdventureStory {
         Scanner sc;
         String line = null;
         try {
+            // creating new file instance
             File file = new File(fName);
+            // create a new scanner instance using that file
             sc = new Scanner(file);
+            // read until the end using delimiter
             sc.useDelimiter("\\Z");
+            // set the first line and trim
             line = sc.nextLine().trim();
         }
+        // catching IO expection
         catch(IOException ex){
             System.out.println("Error reading file: " + fName);
             return false;
         }
+        // catching any runtime exceptions
         catch(RuntimeException ex){
             System.out.println("Unable to read first line from file: " + fName);
             return false;
         }
+        // call parseStory if the first line matches Config.MAGIC_STORY
         if (line.equals(Config.MAGIC_STORY)) {
             parseStory(sc, rooms, trans, curRoom);
         }
+        // call parseBookmark if the first line matches Config.MAGIC_BOOKMARK
         else if (line.equals(Config.MAGIC_BOOKMARK)) {
             parseBookmark(sc, rooms, trans, curRoom);
         }
+        // print error and return false if it matches neither
         else {
             System.out.println("First line: " + line + " does not correspond to known value.");
             return false;
@@ -262,14 +287,19 @@ public class AdventureStory {
         Boolean flag = false;
         String room = null;
         try {
+            // loading filename
             fName = sc.nextLine().trim();
+            // loading room id
             room = sc.nextLine().trim();
+            // calling parsefile with this info
             flag = parseFile(fName, rooms, trans, curRoom);
             curRoom[0] = room;
+            // if parsefile returns error, return false
             if (!flag) {
                 return false;
             }
         }
+        // catching any runtime error and printing error message
         catch(RuntimeException ex){
             System.out.println("Unable to read first line from file: " + fName);
             return false;
@@ -367,7 +397,7 @@ public class AdventureStory {
      * @return false if there is a parsing error. Otherwise, true.
      */
     public static boolean parseStory(Scanner sc, ArrayList<String[]> rooms,
-                                     ArrayList<ArrayList<String[]> > trans, //FIXME: finish stuff in insteructins like outpittig if not properly parsed
+                                     ArrayList<ArrayList<String[]> > trans,
                                      String[] curRoom) {
         int count = 0;
         int tranCount = 0;
@@ -376,22 +406,30 @@ public class AdventureStory {
         String line = sc.nextLine().trim();
         String tempLine = null;
         do {
+            // checking if the templine is null, and if not set it to line
             if (tempLine != null) {
                 line = tempLine;
             }
+            // if the line is blank, or starts with # set it to the next line and trim (ignore)
             if (line.equals("") || line.charAt(0) == '#') {
                 line = sc.nextLine().trim();
                 continue;
             }
+            // code for parsing room
             else if ((line.charAt(0) == 'R') && (Character.isDigit(line.charAt(1)))) {
                 String[] temp = new String[Config.ROOM_DET_LEN];
                 // sets the array position for the room ID to the substring between 'R' and ':'
                 temp[Config.ROOM_ID] = line.substring(line.indexOf("R") + 1, line.indexOf(":")).trim();
                 // Gets the rest of the string after first occurrence of a ':' char
                 temp[Config.ROOM_TITLE] = line.substring(line.lastIndexOf(':') + 1).trim();
+                // sets the room details section, and continues doing so until there is no more
+                // lines, or until it is broken out of
                 while (sc.hasNextLine()) {
                     line = sc.nextLine().trim();
+                    // check if the line is terminal
                     if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
+                        // if so then using a temporary array for the transition, add the line
+                        // and then append it to the arraylist at the current transition
                         String[] tempTran = new String[Config.TRAN_DET_LEN];
                         tempTran[Config.TRAN_DESC] = line;
                         ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
@@ -400,53 +438,75 @@ public class AdventureStory {
                             line = sc.nextLine().trim();
                             trans.add(tempArrList);
                         }
+                        // increment the counts
                         tranCount ++;
                         count ++;
                     }
+                    // if the next line is still part of the description, add the line, replace
+                    // all occurences of null, and add a new line at the end
                     else if (!(line.equals(";;;"))) {
                         temp[Config.ROOM_DESC] += line;
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].replaceAll("null", "");
                         temp[Config.ROOM_DESC] += "\n";
                     }
+                    // if the room description array entry is not empty, trim it and exit the loop
                     else if (temp[Config.ROOM_DESC] != null){
                         temp[Config.ROOM_DESC] = temp[Config.ROOM_DESC].trim();
                         break;
                     }
+                    // if the next line signals the end, and none of the other if's were entered
+                    // (meaning there was no description) make a blank entry for it
                     else if (line.equals(";;;")) {
                         temp[Config.ROOM_DESC] = "";
                     }
                 }
+                // append the temp arraylist to the rooms array list
                 rooms.add(temp);
             }
+            // code for parsing transitions
             else if (line.charAt(0) == ':') {
                 do {
+                    // using a temporary array for the transition, add all the elements and append
                     String[] tempTran = new String[Config.TRAN_DET_LEN];
+                    // get the transition description between the ':' and '-->'
                     tempTran[Config.TRAN_DESC] = line.substring(line.indexOf(":") + 1,
                             line.indexOf("->")).trim();
+                    // if there is a probability then get the id number, and the probability number
                     if (line.contains("?")) {
-                        tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1, line.lastIndexOf("?")).trim();
-                        tempTran[Config.TRAN_PROB] = line.substring(line.lastIndexOf("?") + 1).trim();
+                        // get the transition number after '>' but before '?'
+                        tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1,
+                                line.lastIndexOf("?")).trim();
+                        // get the probability after '?'
+                        tempTran[Config.TRAN_PROB] =
+                                line.substring(line.lastIndexOf("?") + 1).trim();
                     }
                     else {
-                        tempTran[Config.TRAN_ROOM_ID] = line.substring(line.indexOf(">") + 1).trim();
+                        // set the room ID to everything after '>' (given there is no probabilities)
+                        tempTran[Config.TRAN_ROOM_ID] =
+                                line.substring(line.indexOf(">") + 1).trim();
                     }
+                    // add the temp array list to the main array list
                     ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
                     trans.add(tempArrList);
                     trans.get(count).add(tempTran);
                     if (sc.hasNextLine()) {
                         line = sc.nextLine().trim();
                     }
+                    // if no next line, break
                     else {
                         break;
                     }
+                    // if the line is empty, break
                     if (line.equals("")) {
-
                         break;
                     }
+                // keep looping while there is transition data
                 } while (line.charAt(0) == ':');
                 count ++;
             }
+            // code for parsing terminals
             else if (line.equals(Config.FAIL) || line.equals(Config.SUCCESS)) {
+                // using a temporary array, add the terminal
                 String[] tempTran = new String[Config.TRAN_DET_LEN];
                 tempTran[Config.TRAN_DESC] = line;
                 ArrayList<String[]>  tempArrList = new ArrayList<String[]>();
@@ -458,24 +518,31 @@ public class AdventureStory {
                 tranCount ++;
                 count ++;
             }
+            // else skip that line and start loop again
             else {
                 line = sc.nextLine().trim();
                 continue;
             }
+            // if the scanner does not have another line then set templine to line and clear line
+            // in order to break out of the loop
             if (!(sc.hasNextLine())) {
                 tempLine = line;
                 line = null;
             }
+        // loop while the line is not null
         } while (!(line == null));
+        // set the curRoom array to the room ID in the rooms array list
         if (curRoom != null) {
             curRoom[0] = rooms.get(0)[Config.ROOM_ID];
         }
+        // if the sizes of either are zero, or different size, print error message
         if ((trans.size() == 0) || (rooms.size() == 0)) {
             if (!(trans.size() == rooms.size())) {
                 System.out.println("Error parsing file: rooms or transitions not properly parsed.");
                 return false;
             }
         }
+        // remove the arraylist if empty
         if (trans.get(trans.size()-1).size() == 0) {
             trans.remove(trans.size()-1);
         }
@@ -499,12 +566,15 @@ public class AdventureStory {
      * @return The index of the room with the given id if found in rooms. Otherwise, -1.
      */
     public static int getRoomIndex(String id, ArrayList<String[]> rooms) {
+        // loop through rooms
         for(String[] row : rooms) {
+            // if the element for ID in the row matches the ID searching for, return its position
             if (id.equals(row[Config.ROOM_ID])) {
                 int location = rooms.indexOf(row);
                 return location;
             }
         }
+        // if not found return -1
         return -1;
     }
 
@@ -518,6 +588,7 @@ public class AdventureStory {
      * @return The reference to the String array in rooms with the room id of id. Otherwise, null.
      */
     public static String[] getRoomDetails(String id, ArrayList<String[]> rooms) {
+        // find the row that matches the ID and return it's details section
         for(String[] row : rooms) {
             if (id.equals(row[Config.ROOM_ID])) {
                 return row;
@@ -533,6 +604,7 @@ public class AdventureStory {
      * @param c The character to print out.
      */
     public static void printLine(int len, char c) {
+        // print out the given character up to the len ammount of times, on the same line
         for (int i = 0; i < len; i++) {
             System.out.print(c);
         }
@@ -563,29 +635,38 @@ public class AdventureStory {
     public static void printString(int len, String val) {
         System.out.println();
         int count = 0;
+        // if the passed in string is null, return to main
         if (val == null) {
             return;
         }
+        // loop through the string
         for (int i = 0; i < val.length(); i++){
+            // if the value is a newline, print it
             if (val.charAt(i) == '\n') {
                 System.out.print(val.charAt(i));
                 count = 0;
                 continue;
             }
+            // if reached the max number of characters per line
             if (count == len-1) {
+                // if its whitespace, print a new line
                 if (Character.isWhitespace(val.charAt(i))) {
                     System.out.print("\n");
                     count = 0;
                 }
+                // if it is not a letter or digit, print it on a newline
                 else if (!Character.isLetterOrDigit(val.charAt(i))) {
                     System.out.println(val.charAt(i));
                     count = 0;
                 }
                 else {
+                    // else if the character before is whitespace print on a new line
                     if (Character.isWhitespace(val.charAt(i-1))) {
                         System.out.print("\n" + val.charAt(i));
                         count = 1;
                     }
+                    // else if the character before was not whitespace, add a hyphen and print on
+                    // a newline, adding to count
                     else {
                         System.out.println('-');
                         System.out.print(val.charAt(i));
@@ -593,6 +674,7 @@ public class AdventureStory {
                     }
                 }
             }
+            // if not at end of the line length, print the character
             else {
                 System.out.print(val.charAt(i));
                 count ++;
@@ -616,7 +698,7 @@ public class AdventureStory {
      * @param rooms ArrayList containing the room details.
      */
     public static void displayRoom(String id, ArrayList<String[]> rooms) {
-
+        // call all the needed methods to print the room, given it is not null
         String[] roomDetails = getRoomDetails(id, rooms);
         if (roomDetails == null) {
             return;
@@ -655,17 +737,23 @@ public class AdventureStory {
      */
     public static ArrayList<String[]> displayTransitions(String id, ArrayList<String[]> rooms,
                                                          ArrayList<ArrayList<String[]> > trans) {
+        // making sure nothing needed is null
         if (rooms == null || trans == null || id == null) {
             return null;
         }
+        // calling get index of room
         int index = getRoomIndex(id, rooms);
+        // if not found return null
         if (index == -1) {
             return null;
         }
-        else if ((trans.get(index).size() == 1) && ((trans.get(index).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
+        // if the size is only one, and the value is a terminal, return that
+        else if ((trans.get(index).size() == 1)
+                && ((trans.get(index).get(0)[Config.TRAN_DESC].equals(Config.FAIL))
                 || (trans.get(index).get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)))) {
             return trans.get(index);
         }
+        // else print out the room transitions if the probability is null
         else {
             for (int i = 0; i<trans.get(index).size(); i++) {
                 if (trans.get(index).get(i)[Config.TRAN_PROB] == null) {
@@ -702,17 +790,22 @@ public class AdventureStory {
     public static String probTrans(Random rand, ArrayList<String[]> curTrans) {
         int total = 0;
         int random = 0;
+        // check if null
         if (curTrans == null) {
             return null;
         }
         else {
             try {
+                // add up all the values
                 for (int i=0; i<curTrans.size(); i++) {
                     total += Integer.parseInt(curTrans.get(i)[Config.TRAN_PROB]);
                 }
+                // if the total is 0, return null
                 if (total == 0 ) {
                     return null;
                 }
+                // else set to a random value and return the first value that makes the new total
+                // larger than the probability
                 else {
                     random = rand.nextInt(total);
                     total = 0;
@@ -724,6 +817,7 @@ public class AdventureStory {
                     }
                 }
             }
+            // catch number format error
             catch(NumberFormatException ex){
                 return null;
             }
@@ -846,36 +940,53 @@ public class AdventureStory {
         String fName;
         String returnedString;
 
+        // print welcome text
         System.out.println(textWelcome);
+        // loop while the flag is true
         while (flag) {
+            // set filename
             fName = promptString(sc, textPromptFile);
+            // if parsed correctly, set flag2 to true
             if (parseFile(fName, arrRooms, arrTrans, curRoom)) {
                 flag2 = true;
             }
+            // loop while flag2 is true
             while (flag2) {
                 ArrayList<String[]> currTrans = new ArrayList<String[]>();
+                // get the current room
                 int currIndex = getRoomIndex(curRoom[0], arrRooms);
+                // reset win and loose
                 win = false;
                 loose = false;
+                // if the index is not -1 then set the win/loose booleans based off the current
+                // transition values
                 if (currIndex != -1) {
                     currTrans = arrTrans.get(currIndex);
                     win = currTrans.get(0)[Config.TRAN_DESC].equals(Config.SUCCESS);
                     loose = currTrans.get(0)[Config.TRAN_DESC].equals(Config.FAIL);
                 }
+                // otherwise loose is true
                 else {
                     loose = true;
                 }
+                // display the room
                 displayRoom(curRoom[0], arrRooms);
+                // display transitions if the transitions are not terminal
                 if (currTrans.size() > 0
                         && !currTrans.get(0)[Config.TRAN_DESC].equals(Config.SUCCESS)
                         && !currTrans.get(0)[Config.TRAN_DESC].equals(Config.FAIL)) {
                     displayTransitions(curRoom[0], arrRooms, arrTrans);
                 }
+                // if win and loose are false continue
                 if (!win && !loose) {
+                    // call probTrans
                     probTransReturn = probTrans(rand, arrTrans.get(currIndex));
+                    // if null enter
                     if (probTransReturn == null) {
+                        // call prompt int
                         int transChosen = promptInt(sc, "Choose: ", -2,
                                 arrTrans.get(currIndex).size() - 1);
+                        // if -1, quit if the user enters 'y' and set to loose
                         if (transChosen == -1) {
                             char quitChar = promptChar(sc, textQuit);
                             if (quitChar == 'y') {
@@ -883,14 +994,17 @@ public class AdventureStory {
                                 loose = true;
                             }
                         }
+                        // if -2, run bookmark code
                         else  if (transChosen == -2) {
+                            // create a temp array with room details
                             String[] roomDetails = getRoomDetails(curRoom[0], arrRooms);
-                            String prompt = "Bookmarking current location: " + roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
+                            // prompt for bookmark filename
+                            String prompt = "Bookmarking current location: " +
+                                    roomDetails[Config.ROOM_TITLE] +". Enter bookmark filename: ";
                             returnedString = promptString(sc, prompt);
-                            if (returnedChar == 'y') {
-                                arrTrans.get(Integer.parseInt(curRoom[0])-1).get(0)[Config.TRAN_DESC] = Config.FAIL;
-                            }
+                            // call save bookmark
                             returnedBoolean = saveBookmark(fName, curRoom[0], returnedString);
+                            // print if saving bookmark was successful or not
                             if (returnedBoolean == true) {
                                 System.out.println("Bookmark saved in " + returnedString);
                             }
@@ -898,24 +1012,31 @@ public class AdventureStory {
                                 System.out.println("Error saving bookmark in " + returnedString);
                             }
                         }
+                        // otherwise set the current room to the room ID at the choose value
                         else {
-                            curRoom[0] = arrTrans.get(currIndex).get(transChosen)[Config.TRAN_ROOM_ID];
+                            curRoom[0] = arrTrans.get(currIndex).get(transChosen)
+                                    [Config.TRAN_ROOM_ID];
                         }
                     }
+                    // otherwise set the room to what probTrans returned
                     else {
                         curRoom[0] = probTransReturn;
                     }
                 }
+                // print loose message is loose is true
                 else if (loose) {
                     System.out.println(textLoose);
                     flag2 = false;
                 }
+                // otherwise print win message
                 else {
                     System.out.println(textWin);
                     flag2 = false;
                 }
             }
+            // prompt for char to try again
             returnedChar = promptChar(sc, "Do you want to try again? ");
+            // if 'n', print thank you message, and quit- otherwise continue
             if (returnedChar == 'n') {
                 System.out.println("Thank you for playing!");
                 return;
