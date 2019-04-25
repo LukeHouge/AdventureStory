@@ -563,6 +563,7 @@ public class AdventureStory {
             if (val.charAt(i) == '\n') {
                 System.out.print(val.charAt(i));
                 count = 0;
+                continue;
             }
             if (count == len-1) {
                 if (Character.isWhitespace(val.charAt(i))) {
@@ -570,24 +571,18 @@ public class AdventureStory {
                     count = 0;
                 }
                 else if (!Character.isLetterOrDigit(val.charAt(i))) {
-                    System.out.println();
+                    System.out.println(val.charAt(i));
                     count = 0;
-                    System.out.print(val.charAt(i));
-                    count++;
                 }
                 else {
                     if (Character.isWhitespace(val.charAt(i-1))) {
-                        System.out.println();
-                        count = 0;
-                        System.out.print(val.charAt(i));
-                        count++;
+                        System.out.print("\n" + val.charAt(i));
+                        count = 1;
                     }
                     else {
-                        System.out.print('-');
-                        System.out.println();
-                        count = 0;
+                        System.out.println('-');
                         System.out.print(val.charAt(i));
-                        count++;
+                        count = 1;
                     }
                 }
             }
