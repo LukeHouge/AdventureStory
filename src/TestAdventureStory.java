@@ -21,10 +21,9 @@
 //
 /////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Random;
+import java.util.*;
+import java.io.*;
+import java.lang.*;
 
 /**
  * This class contains a few methods for testing methods in the AdventureStory
@@ -55,7 +54,8 @@ public class TestAdventureStory {
         testParseStoryZyBooks();
 
         //Milestone 3 Tests
-        //TODO
+        testParseBookmark();
+        testProbTrans();
     }
 
     /**
@@ -173,7 +173,28 @@ public class TestAdventureStory {
                 error = true;
             }
         }
-        // TODO: add another test
+        {
+            // Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"id4","id1","id8"},{"id2","id4","id6"}}));
+            int expected = 0;
+            int result = AdventureStory.getRoomIndex(new String("id4"),in);
+            if(expected != result) {
+                System.out.println("2) testGetRoomIndex expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+        {
+            // Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"id5","id1","id8"},{"id2","id4","id6"}}));
+            int expected = -1;
+            int result = AdventureStory.getRoomIndex(new String("id4"),in);
+            if(expected != result) {
+                System.out.println("3) testGetRoomIndex expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
         
         if(error) {
             System.out.println("testGetRoomIndex failed");
@@ -197,6 +218,30 @@ public class TestAdventureStory {
             if(!Arrays.equals(expected,result)) {
                 System.out.println("1) testGetRoomDetails expected: " + Arrays.toString(expected)
                                    + " result: " + Arrays.toString(result));
+                error = true;
+            }
+        }
+        {
+            //Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"hello","44","hi2"},{"id2","",""}}));
+            String[] expected = in.get(0);
+            String[] result = AdventureStory.getRoomDetails(new String("hello"),in);
+            if(!Arrays.equals(expected,result)) {
+                System.out.println("2) testGetRoomDetails expected: " + Arrays.toString(expected)
+                        + " result: " + Arrays.toString(result));
+                error = true;
+            }
+        }
+        {
+            //Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"hi","44","hi2"},{"hello","",""}}));
+            String[] expected = in.get(1);
+            String[] result = AdventureStory.getRoomDetails(new String("hello"),in);
+            if(!Arrays.equals(expected,result)) {
+                System.out.println("3) testGetRoomDetails expected: " + Arrays.toString(expected)
+                        + " result: " + Arrays.toString(result));
                 error = true;
             }
         }
@@ -447,6 +492,88 @@ public class TestAdventureStory {
 
         }
 
+    }
+
+    /**
+     * This runs some tests on the testProbTrans method.
+     */
+    private static void testProbTrans() {
+        boolean error = false;
+
+        {
+            // Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"4","3","2"},{"2","3","1"}}));
+            Random rand = new Random();
+            String expected = "3";
+            String result = AdventureStory.probTrans(rand, in);
+            if(!expected.equals(result)) {
+                System.out.println("1) testProbTrans expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+        {
+            // Assuming normal Config.java
+            ArrayList<String[]> in
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"23","14","18"},{"9","2","1"}}));
+            Random rand = new Random();
+            String expected = "14";
+            String result = AdventureStory.probTrans(rand, in);
+            if(!expected.equals(result)) {
+                System.out.println("2) testProbTrans expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+
+        if(error) {
+            System.out.println("testProbTrans failed");
+        } else {
+            System.out.println("testProbTrans passed");
+        }
+    }
+
+    /**
+     * This runs some tests on the testParseBookmark method.
+     */
+    private static void testParseBookmark() {
+        boolean error = false;
+
+        {
+            // Assuming normal Config.java
+            Scanner in = new Scanner("Goldilocks.story\n2");
+            String[] curRoom = new String[1];
+            ArrayList<String[]> rooms
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"id1","",""},{"id2","",""}}));
+            ArrayList<ArrayList<String[]> >  trans = new ArrayList<ArrayList<String[]> >();
+
+            boolean expected = true;
+            boolean result = AdventureStory.parseBookmark(in, rooms, trans, curRoom);
+            if(expected != result) {
+                System.out.println("1) testParseBookmark expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+        {
+            // Assuming normal Config.java
+            Scanner in = new Scanner("8\n");
+            String[] curRoom = new String[1];
+            ArrayList<String[]> rooms
+                    = new ArrayList<>(Arrays.asList(new String[][]{{"id1","",""},{"id2","",""}}));
+            ArrayList<ArrayList<String[]> >  trans = new ArrayList<ArrayList<String[]> >();
+
+            boolean expected = false;
+            boolean result = AdventureStory.parseBookmark(in, rooms, trans, curRoom);
+            if(expected != result) {
+                System.out.println("2) testParseBookmark expected: " + expected + " result: " + result);
+                error = true;
+            }
+        }
+
+        if(error) {
+            System.out.println("testParseBookmark failed");
+        } else {
+            System.out.println("testParseBookmark passed");
+        }
     }
 
     private static String toString2dArrayLists(ArrayList<ArrayList<String[]> > arrL1) {
